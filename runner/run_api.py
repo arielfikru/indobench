@@ -38,6 +38,12 @@ import yaml
 REPO = Path(__file__).resolve().parent.parent
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 LETTER_RE = re.compile(r"^\W*(?:jawaban\W*)?\(?([A-Z])\b", re.IGNORECASE)
+# Fallbacks when a model explains first: "Jawaban(nya) (yang paling tepat) (adalah): B", "**B**",
+# or a letter alone on the last line. The last match wins.
+ANSWER_RE = re.compile(
+    r"(?:jawaban(?:nya)?(?:\s+yang\s+(?:paling\s+)?tepat)?(?:\s+adalah)?\s*[:\uff1a]?\s*\**\(?|\*\*\(?)([A-Z])(?![A-Za-z])",
+    re.IGNORECASE)
+LAST_LINE_RE = re.compile(r"(?:^|\n)\W*([A-Z])\W*$")
 
 
 def log(msg: str) -> None:
@@ -95,10 +101,15 @@ def call_api(key: str, model: str, prompt: str, max_tokens: int, reasoning: dict
 
 
 def extract(text: str, choices: list[str]) -> int | None:
-    m = LETTER_RE.match(text or "")
+    text = text or ""
+    m = LETTER_RE.match(text)
     if m and m[1].upper() in choices:
         return choices.index(m[1].upper())
-    return None
+    hits = [h.upper() for h in ANSWER_RE.findall(text) if h.upper() in choices]
+    m = LAST_LINE_RE.search(text.strip())
+    if m and m[1] in choices:
+        hits.append(m[1])
+    return choices.index(hits[-1]) if hits else None
 
 
 def run_task(args, key: str, model_dir: Path, bench_key: str, task_name: str, usage: dict) -> None:

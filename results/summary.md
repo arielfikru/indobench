@@ -127,6 +127,41 @@ _Dilewati: `sahabatai-gemma2-9b-it` vs `gemma4-26b-a4b-it`: salah satu model tid
 
 Tidak ada model >= 20B yang skornya dalam 5 poin dari random.
 
+## i. Semua model vs terbaik per task (paired bootstrap, koreksi Holm per task)
+
+| Task | Terbaik | Model | Delta vs terbaik | CI 95% | p | p Holm sig. | Status |
+|---|---|---|---|---|---|---|---|
+| copal_id_colloquial_t0 | gotoai-gemma3-27b-it | gemma2-9b-it | -0.068 | [-0.104, -0.032] | 0.0000 | ya | di bawah terbaik |
+| copal_id_colloquial_t0 | gotoai-gemma3-27b-it | gemma3-27b-it | -0.007 | [-0.020, 0.005] | 0.3610 | tidak | seri dengan terbaik |
+| copal_id_colloquial_t0 | gotoai-gemma3-27b-it | gemma4-12b-it | -0.023 | [-0.059, 0.014] | 0.2266 | tidak | seri dengan terbaik |
+| copal_id_colloquial_t0 | gotoai-gemma3-27b-it | qwen3.8-27b | -0.014 | [-0.048, 0.018] | 0.4258 | tidak | seri dengan terbaik |
+| copal_id_colloquial_t0 | gotoai-gemma3-27b-it | sahabatai-gemma2-9b-it | -0.038 | [-0.068, -0.009] | 0.0162 | tidak | seri dengan terbaik |
+| copal_id_standard_t0 | gotoai-gemma3-27b-it | gemma2-9b-it | -0.086 | [-0.118, -0.054] | 0.0000 | ya | di bawah terbaik |
+| copal_id_standard_t0 | gotoai-gemma3-27b-it | gemma3-27b-it | -0.005 | [-0.020, 0.009] | 0.5460 | tidak | seri dengan terbaik |
+| copal_id_standard_t0 | gotoai-gemma3-27b-it | gemma4-12b-it | -0.011 | [-0.043, 0.020] | 0.5432 | tidak | seri dengan terbaik |
+| copal_id_standard_t0 | gotoai-gemma3-27b-it | qwen3.8-27b | -0.007 | [-0.038, 0.023] | 0.7026 | tidak | seri dengan terbaik |
+| copal_id_standard_t0 | gotoai-gemma3-27b-it | sahabatai-gemma2-9b-it | -0.055 | [-0.086, -0.025] | 0.0006 | ya | di bawah terbaik |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gemma2-9b-it | -0.155 | [-0.175, -0.134] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gemma3-27b-it | -0.081 | [-0.098, -0.063] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gemma4-12b-it | -0.085 | [-0.104, -0.066] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.086 | [-0.103, -0.068] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.149 | [-0.169, -0.129] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gemma2-9b-it | -0.083 | [-0.115, -0.052] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gemma3-27b-it | -0.028 | [-0.057, 0.003] | 0.0820 | tidak | seri dengan terbaik |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gemma4-12b-it | -0.101 | [-0.133, -0.071] | 0.0000 | ya | di bawah terbaik |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.029 | [-0.059, 0.001] | 0.0708 | tidak | seri dengan terbaik |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.048 | [-0.080, -0.018] | 0.0024 | ya | di bawah terbaik |
+| indoculture_t0 | qwen3.8-27b | gemma2-9b-it | -0.066 | [-0.086, -0.047] | 0.0000 | ya | di bawah terbaik |
+| indoculture_t0 | qwen3.8-27b | gemma3-27b-it | -0.005 | [-0.023, 0.013] | 0.6152 | tidak | seri dengan terbaik |
+| indoculture_t0 | qwen3.8-27b | gemma4-12b-it | -0.019 | [-0.037, 0.000] | 0.0522 | tidak | seri dengan terbaik |
+| indoculture_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.000 | [-0.018, 0.017] | 0.9908 | tidak | seri dengan terbaik |
+| indoculture_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.043 | [-0.062, -0.023] | 0.0000 | ya | di bawah terbaik |
+| indommlu_t0 | qwen3.8-27b | gemma2-9b-it | -0.102 | [-0.110, -0.094] | 0.0000 | ya | di bawah terbaik |
+| indommlu_t0 | qwen3.8-27b | gemma3-27b-it | -0.042 | [-0.049, -0.035] | 0.0000 | ya | di bawah terbaik |
+| indommlu_t0 | qwen3.8-27b | gemma4-12b-it | -0.030 | [-0.037, -0.023] | 0.0000 | ya | di bawah terbaik |
+| indommlu_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.038 | [-0.045, -0.031] | 0.0000 | ya | di bawah terbaik |
+| indommlu_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.078 | [-0.086, -0.071] | 0.0000 | ya | di bawah terbaik |
+
 ## h. Fertilitas tokenizer
 
 | model_key | repo | revision | tokenizer_hash | vocab_size | lang | n_sentences | n_words | n_tokens | fertility | chars_per_token | premium_id_en | fertility_ratio_id_en | dataset | dataset_revision | split | status |

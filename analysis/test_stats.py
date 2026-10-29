@@ -54,3 +54,11 @@ def test_seed_determinism():
     assert bootstrap_ci(x, seed=7) == bootstrap_ci(x, seed=7)
     assert paired_bootstrap_delta(x, y, seed=7) == paired_bootstrap_delta(x, y, seed=7)
     assert bootstrap_ci(x, seed=7) != bootstrap_ci(x, seed=8)
+
+
+def test_holm_step_down():
+    from stats import holm
+    # m=3: thresholds 0.0167, 0.025, 0.05 in p order
+    assert holm([0.01, 0.02, 0.04]) == [True, True, True]
+    assert holm([0.01, 0.03, 0.04]) == [True, False, False]
+    assert holm([0.2, 0.001]) == [False, True]

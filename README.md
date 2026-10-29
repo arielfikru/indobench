@@ -1,36 +1,62 @@
 # indobench
 
-Benchmark of open-weight LLMs in Indonesian, built on EleutherAI lm-evaluation-harness (vLLM backend), run on a Google Colab GPU through the Colab CLI.
+An evaluation study of open-weight LLMs on existing Indonesian benchmarks (IndoMMLU, IndoCulture, Global-MMLU ID, COPAL-ID), built on EleutherAI lm-evaluation-harness (vLLM backend) and run on a Google Colab GPU. Phase 0 writes no test items of its own; an original dataset is planned for phase 1 (`spec-ifeval-id-gaul.md`).
 
 Phase 0 asks two questions:
-1. Do regional derivatives of older bases (GoTo's Gemma 3 27B CPT, GoTo Sahabat-AI on Gemma 2 9B) still beat the newest general models (Qwen3.8, Gemma 4) in Indonesian?
-2. How much does regional continued pretraining add over its own base, especially in colloquial Indonesian?
+1. Do regional derivatives of older bases (GoTo Gemma 3 27B, GoTo Sahabat-AI on Gemma 2 9B) still match the newest general models (Qwen3.8, Gemma 4) in Indonesian?
+2. How much does regional continued pretraining (CPT) add over its own base, especially in colloquial Indonesian?
 
-## Results (run `full-m4`, October 2026)
+## Results (October 2026)
 
-Accuracy (%), zero-shot. Full tables with 95% CIs and paired tests: [`results/summary.md`](results/summary.md). Write-up: [`blog/phase0-draft.md`](blog/phase0-draft.md).
+Accuracy (%), zero-shot. Bold is the highest score; shaded cells are the highest score and every model not significantly below it (paired bootstrap over items, Holm-corrected within each task). Full tables: [`results/summary.md`](results/summary.md). Write-up: [`blog/phase0-draft.md`](blog/phase0-draft.md).
 
 ![Results table](results/results_table.png)
 
 <details>
 <summary>Same table as text</summary>
 
-| Task | Qwen3.8 27B | GoTo Gemma 3 27B | Gemma 3 27B | Gemma 4 12B | Sahabat-AI 9B | Gemma 2 9B |
-|---|---|---|---|---|---|---|
-| IndoMMLU | **71.4** | 67.6 | 67.2 | 68.4 | 63.6 | 61.2 |
-| IndoCulture | **74.1** | **74.1** | 73.7 | 72.3 | 69.9 | 67.5 |
-| Global-MMLU ID, culturally sensitive | **77.1** | 74.2 | 74.4 | 67.0 | 72.3 | 68.8 |
-| Global-MMLU ID, culturally agnostic | **79.3** | 70.7 | 71.2 | 70.7 | 64.4 | 63.8 |
-| COPAL-ID standard | 86.4 | **87.1** | 86.6 | 86.0 | 81.6 | 78.5 |
-| COPAL-ID colloquial | 82.3 | **83.7** | 83.0 | 81.4 | 80.0 | 76.9 |
+| Task | n | Qwen3.8 27B | GoTo Gemma 3 27B | Gemma 3 27B | Gemma 4 12B | Sahabat-AI 9B | Gemma 2 9B |
+|---|---|---|---|---|---|---|---|
+| IndoMMLU | 14,904 | **71.4** | 67.6 | 67.2 | 68.4 | 63.6 | 61.2 |
+| Global-MMLU ID, culturally agnostic | 2,058 | **79.3** | 70.7 | 71.2 | 70.7 | 64.4 | 63.8 |
+| Global-MMLU ID, culturally sensitive | 792 | **77.1** | 74.2 ≈ | 74.4 ≈ | 67.0 | 72.3 | 68.8 |
+| IndoCulture | 2,429 | **74.1** | **74.1** | 73.7 ≈ | 72.3 ≈ | 69.9 | 67.5 |
+| COPAL-ID standard | 559 | 86.4 ≈ | **87.1** | 86.6 ≈ | 86.0 ≈ | 81.6 | 78.5 |
+| COPAL-ID colloquial | 559 | 82.3 ≈ | **83.7** | 83.0 ≈ | 81.4 ≈ | 80.0 ≈ | 76.9 |
+
+≈ = not significantly below the best model on that task.
 
 </details>
 
-- The newest general model wins on knowledge (Qwen3.8: +8.6 on Global-MMLU culturally agnostic, +3.8 on IndoMMLU over GoTo Gemma 3).
-- On culture and language, the regional models tie or lead.
-- Regional CPT effect over its own base: GoTo Gemma 3 27B is within 1 point of Gemma 3 27B on every task. Sahabat-AI 9B gains 2-3.5 points over Gemma 2 9B, significant on 4 of 6 tasks, largest on culturally sensitive questions.
-- Colloquial Indonesian still costs 2-5 points on COPAL-ID.
-- lm_eval's built-in `copal_id` task cuts the last character of 79% of colloquial premises; we use a fixed MCQ version (`tasks/copal_id`). Details in `NOTES_tasks.md`.
+What the numbers support:
+- **Exams and translated MMLU:** Qwen3.8 is best and significantly above every other model on IndoMMLU (+3.0 over the next model) and Global-MMLU culturally agnostic (+8.1).
+- **Global-MMLU "culturally sensitive" is not a test of Indonesian culture:** the Global-MMLU paper reports that most of these questions need Western cultural knowledge. Qwen3.8 leads; GoTo Gemma 3 and Gemma 3 are not significantly lower.
+- **Indonesian culture (IndoCulture):** Qwen3.8 and GoTo Gemma 3 tie at 74.1; Gemma 3 and Gemma 4 12B are not significantly lower.
+- **COPAL-ID:** the four strongest models are statistically tied. GoTo Gemma 3's top score is within noise, and base Gemma 3 scores the same, so this is not a CPT effect.
+- **CPT over its own base (question 2):**
+  - GoTo Gemma 3 27B vs Gemma 3 27B: no measurable gain. Every delta is under 1 point; only IndoMMLU (+0.4) is significant.
+  - Sahabat-AI 9B vs Gemma 2 9B: +0.6 to +3.5 points. Significant (paired bootstrap, p < 0.05, uncorrected) on IndoMMLU (+2.4), IndoCulture (+2.3), Global-MMLU culturally sensitive (+3.5) and COPAL-ID standard (+3.0); not on Global-MMLU culturally agnostic (+0.6) or COPAL-ID colloquial (+3.0, p = 0.07).
+- **Colloquial penalty on COPAL-ID:** 1.6 to 4.7 points. Significant for the four 27B/12B models, not for the two Gemma 2 9B models, whose standard-register scores are lower to begin with.
+- **Harness bug:** lm_eval's built-in `copal_id` task cuts the last character of 79% of colloquial premises; we use a fixed lettered-MCQ version (`tasks/copal_id`). Details in `NOTES_tasks.md`.
+
+## Limitations
+
+- **Contamination is not tested.** All four datasets were public (2023-2024) before these models were trained, and some model cards report IndoMMLU. Scores may include memorisation; an option-shuffle check is planned.
+- **Loglikelihood scoring with the chat template.** Each answer letter is scored after a `Jawaban:` prefix inside the assistant turn. This is one reasonable setup, not the only one: generative scoring or no chat template can change scores and rankings. A generative run with Claude models is in progress (`runner/run_anthropic.py`).
+- **Model sizes differ.** Like-for-like comparisons are the two CPT pairs and the three 27B models; cross-size rows (12B, 9B vs 27B) are context, not a fair contest.
+- **Statistics.** CIs are bootstrapped over items and not clustered by subject or province, so they are somewhat too narrow on IndoMMLU and IndoCulture. Holm correction is applied in the best-per-task comparison only.
+- **Reproducibility comes from pinned model SHAs and package versions.** The seed (1234) has no effect on loglikelihood scoring; the only run-to-run variation is numeric, measured once on a small model (Gemma 4 E2B, 50 items per task, zero difference).
+
+### Run history
+
+`results/summary.md` merges these runs (raw logs are not in the repo):
+
+| Run | What |
+|---|---|
+| `full-m4` | Qwen3.8 27B, GoTo Gemma 3 27B, Gemma 4 12B, Sahabat-AI 9B, all tasks (Qwen3.8 rerun as `full-m4b` after a full disk) |
+| `full-m4c` | base models Gemma 3 27B and Gemma 2 9B, all tasks |
+| `copal-t0`, `copal-t0b` | COPAL-ID with the fixed task for the first four models; replaces their built-in `copal_id` scores |
+| `smoke-a/b`, `calib*` | 50-item smoke and prompt-calibration runs (`results/smoke`, `results/calib`) |
 
 ## Layout
 
@@ -41,7 +67,8 @@ Accuracy (%), zero-shot. Full tables with 95% CIs and paired tests: [`results/su
 | `tasks/` | custom lm_eval tasks (IndoMMLU, IndoCulture, Global-MMLU CS/CA, COPAL-ID), loaded with `--include_path` |
 | `runner/run_matrix.py` | runs on the VM: one lm_eval subprocess per model, resumable, writes manifest |
 | `runner/verify_env.py` | VM check: versions + one tiny generate |
-| `runner/run_api.py` | closed-model comparator over the OpenRouter API (generative letter answers); not run yet |
+| `runner/run_api.py` | closed-model comparator over the OpenRouter API (generative letter answers) |
+| `runner/run_anthropic.py` | Claude models over the Anthropic API (sync or Message Batches), same prompts and letter extraction |
 | `scripts/` | local drivers: provision, sync_code, start_run, watch, pull_results, teardown |
 | `analysis/summarize.py` | local: scores, bootstrap CI, paired deltas, noise floor → `results/summary.{md,csv}` |
 | `analysis/results_table.py` | renders `results/results_table.png` from `results/summary.csv` |
@@ -84,18 +111,18 @@ Requirements on the Mac: `colab` CLI (logged in), `uv`, `HF_TOKEN` in the enviro
    ```
 5. Full matrix:
    ```bash
-   scripts/start_run.sh full-v1 --models all
+   scripts/start_run.sh my-run --models all
    scripts/watch.sh --stop
    ```
    Re-running the same command resumes: finished model × task pairs (`DONE.json`) are skipped.
 6. Pull results and stop the VM:
    ```bash
-   scripts/pull_results.sh full-v1
+   scripts/pull_results.sh my-run
    scripts/teardown.sh
    ```
 7. Summarize:
    ```bash
-   uv run --with numpy --with pyyaml python analysis/summarize.py --results results/runs --run-id full-v1 --out results/
+   uv run --with numpy --with pyyaml python analysis/summarize.py --results results/runs --run-id my-run --out results/
    ```
    For the noise floor, run the same summarize on `smoke-a` with `--compare-run smoke-b`.
 

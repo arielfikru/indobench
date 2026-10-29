@@ -19,7 +19,7 @@ from typing import Any
 import numpy as np
 import yaml
 
-from stats import bootstrap_ci, paired_bootstrap_delta, stderr, unpaired_bootstrap_delta
+from stats import bootstrap_ci, holm, paired_bootstrap_delta, stderr, unpaired_bootstrap_delta
 
 REPO = Path(__file__).resolve().parent.parent
 SAMPLES_RE = re.compile(r"^samples_(?P<task>.+)_(?P<ts>\d{4}-\d{2}-\d{2}T[\d.-]+)\.jsonl$")
@@ -370,9 +370,38 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
             writer.writerow(out)
 
 
+def section_best(run: RunData, best_rows: list[dict[str, Any]]) -> list[str]:
+    """Every model vs the best model on each task (paired bootstrap), Holm-corrected within the task.
+
+    A model is "tied with best" when its deficit is not significant after correction. Feeds the
+    shading in results/results_table.png.
+    """
+    tasks = sorted({t for per_model in run.values() for t in per_model})
+    lines = md_table(["Task", "Terbaik", "Model", "Delta vs terbaik", "CI 95%", "p", "p Holm sig.", "Status"], [])
+    for task in tasks:
+        have = {m: per_model[task] for m, per_model in run.items() if task in per_model}
+        if len(have) < 2:
+            continue
+        best = max(have, key=lambda m: mean_of(have[m]))
+        others = [m for m in sorted(have) if m != best]
+        results = {m: paired_result(have[m], have[best]) for m in others}
+        valid = [m for m in others if results[m] is not None]
+        reject = dict(zip(valid, holm([results[m].p for m in valid])))
+        best_rows.append({"task": task, "model": best, "best": best, "delta": 0.0, "ci_lo": 0.0, "ci_hi": 0.0,
+                          "p": 1.0, "holm_significant": False, "tied_with_best": True})
+        for m in valid:
+            r = results[m]
+            tied = not reject[m]
+            best_rows.append({"task": task, "model": m, "best": best, "delta": r.delta, "ci_lo": r.lo,
+                              "ci_hi": r.hi, "p": r.p, "holm_significant": reject[m], "tied_with_best": tied})
+            lines.append(f"| {task} | {best} | {m} | {r.delta:+.3f} | {ci_text(r.lo, r.hi)} | {r.p:.4f} | "
+                         f"{'ya' if reject[m] else 'tidak'} | {'seri dengan terbaik' if tied else 'di bawah terbaik'} |")
+    return lines
+
+
 def build_markdown(args: argparse.Namespace, run: RunData, cmp_run: RunData | None, models: dict[str, Any],
                    cfg_compare: dict[str, Any], meta: dict[str, dict[str, Any]], rows: list[dict[str, Any]],
-                   notes: list[str]) -> str:
+                   notes: list[str], best_rows: list[dict[str, Any]]) -> str:
     header = [f"# Ringkasan indobench: run `{args.run_id}`", "",
               f"- Metrik: `{args.metric}`", f"- Model di run: {len(run)}",
               f"- Compare run: `{args.compare_run}`" if args.compare_run else "- Compare run: -", ""]
@@ -387,6 +416,7 @@ def build_markdown(args: argparse.Namespace, run: RunData, cmp_run: RunData | No
     add("d. Gap baku vs kolokial (COPA-ID)", section_copa_gap(run))
     add("e. Gap Global-MMLU CS vs CA", section_mmlu_gap(run))
     add("f. Sanity: model >= 20B dekat random", section_sanity(run, models, meta))
+    add("i. Semua model vs terbaik per task (paired bootstrap, koreksi Holm per task)", section_best(run, best_rows))
     if cmp_run is not None:
         add("g. Noise floor antar-run", section_noise(run, cmp_run))
     add("h. Fertilitas tokenizer", section_tokenizer(args.out_dir / "tokenizer_fertility.csv"))
@@ -423,10 +453,19 @@ def main(argv: list[str] | None = None) -> int:
             notes.append(f"model `{key}` di run tidak ada di models.yaml (tanpa info pair/params)")
 
     rows: list[dict[str, Any]] = []
-    md = build_markdown(args, run, cmp_run, models, cfg_compare, meta, rows, notes)
+    best_rows: list[dict[str, Any]] = []
+    md = build_markdown(args, run, cmp_run, models, cfg_compare, meta, rows, notes, best_rows)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     write_csv(args.out_dir / "summary.csv", rows)
     (args.out_dir / "summary.md").write_text(md + "\n", encoding="utf-8")
+    with (args.out_dir / "best_per_task.csv").open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["task", "model", "best", "delta", "ci_lo", "ci_hi", "p",
+                                          "holm_significant", "tied_with_best"])
+        w.writeheader()
+        for r in best_rows:
+            w.writerow({**r, **{k: f"{r[k]:.6f}" for k in ("delta", "ci_lo", "ci_hi", "p")},
+                        "holm_significant": str(r["holm_significant"]).lower(),
+                        "tied_with_best": str(r["tied_with_best"]).lower()})
     print(f"Ditulis: {args.out_dir / 'summary.csv'} ({len(rows)} baris), {args.out_dir / 'summary.md'}")
     return 0
 

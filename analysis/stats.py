@@ -82,3 +82,15 @@ def unpaired_bootstrap_delta(
     boot = boot_a - boot_b
     lo, hi = np.quantile(boot, [alpha / 2, 1 - alpha / 2])
     return (float(a.mean() - b.mean()), float(lo), float(hi), _p_two_sided(boot))
+
+
+def holm(pvalues: list[float], alpha: float = 0.05) -> list[bool]:
+    """Holm-Bonferroni step-down: which hypotheses are rejected at family-wise level alpha."""
+    order = sorted(range(len(pvalues)), key=lambda i: pvalues[i])
+    reject = [False] * len(pvalues)
+    m = len(pvalues)
+    for rank, i in enumerate(order):
+        if pvalues[i] > alpha / (m - rank):
+            break
+        reject[i] = True
+    return reject
