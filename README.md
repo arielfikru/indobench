@@ -43,6 +43,11 @@ What the numbers support:
 
 Claude models over the Anthropic Message Batches API, same prompts (`runner/run_anthropic.py`). The model writes an answer and the letter is extracted with a regex; an answer with no letter counts as wrong (Haiku 1.7%, Sonnet 0.8%, Opus 0.1% of items, mostly IndoMMLU questions that refer to a missing picture or passage). Thinking off for Haiku and Sonnet; Opus 5.5 cannot turn thinking off and runs at effort `low`. Because the scoring differs from the loglikelihood runs above, read these as a reference point, not a like-for-like ranking. Details: [`results/claude/summary.md`](results/claude/summary.md).
 
+![Claude results table](results/claude_table.png)
+
+<details>
+<summary>Same table as text</summary>
+
 | Task | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Qwen3.8 27B (best open) |
 |---|---|---|---|---|
 | IndoMMLU | 71.1 ± 0.7 | 81.2 ± 0.6 | **85.7** ± 0.6 | 71.4 |
@@ -52,6 +57,8 @@ Claude models over the Anthropic Message Batches API, same prompts (`runner/run_
 | COPAL-ID standard | 84.6 ± 3.0 | 94.6 ± 1.9 | **97.0** ± 1.4 | 86.4 |
 | COPAL-ID colloquial | 80.9 ± 3.2 | 91.1 ± 2.4 | **97.3** ± 1.3 | 82.3 |
 | Cost for all 21,301 items (batch price) | $0.31 | $7.43 | $21.70 | |
+
+</details>
 
 - Opus 5.5 shows no colloquial penalty on COPAL-ID (97.0 vs 97.3); Haiku and Sonnet drop about 3.5 points, like the open models.
 - On IndoCulture the gap between the best closed and best open model (19 points) is far larger than any regional-vs-general gap among open models.
@@ -88,7 +95,7 @@ Claude models over the Anthropic Message Batches API, same prompts (`runner/run_
 | `runner/run_anthropic.py` | Claude models over the Anthropic API (sync or Message Batches), same prompts and letter extraction |
 | `scripts/` | local drivers: provision, sync_code, start_run, watch, pull_results, teardown |
 | `analysis/summarize.py` | local: scores, bootstrap CI, paired deltas, noise floor → `results/summary.{md,csv}` |
-| `analysis/results_table.py` | renders `results/results_table.png` from `results/summary.csv` |
+| `analysis/results_table.py` | renders `results/results_table.png` and `results/claude_table.png` from the summary CSVs |
 | `analysis/copal_check.py` | diagnosis of the built-in COPAL-ID task from sample logs |
 | `blog/` | write-up of phase 0 |
 | `tokenizer/fertility.py` | local, CPU: tokens per word on FLORES-200 ind_Latn vs eng_Latn |
