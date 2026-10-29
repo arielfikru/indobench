@@ -8,24 +8,24 @@
 
 | Model | Task (lm_eval) | n | Skor [95% CI] | stderr | Random | Di atas random |
 |---|---|---|---|---|---|---|
-| claude-haiku-5.5 | copal_id_colloquial_t0 | 559 | 0.809 [0.776, 0.841] | 0.017 | 0.007 | ya |
-| claude-haiku-5.5 | copal_id_standard_t0 | 559 | 0.846 [0.816, 0.875] | 0.015 | 0.003 | ya |
-| claude-haiku-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 0.809 [0.791, 0.826] | 0.009 | 0.006 | ya |
-| claude-haiku-5.5 | global_mmlu_full_id_cs_t0 | 792 | 0.758 [0.727, 0.787] | 0.015 | 0.002 | ya |
-| claude-haiku-5.5 | indoculture_t0 | 2429 | 0.762 [0.745, 0.779] | 0.009 | 0.004 | ya |
-| claude-haiku-5.5 | indommlu_t0 | 14904 | 0.711 [0.704, 0.718] | 0.004 | 0.006 | ya |
-| claude-opus-5.5 | copal_id_colloquial_t0 | 559 | 0.973 [0.959, 0.986] | 0.007 | 0.200 | ya |
-| claude-opus-5.5 | copal_id_standard_t0 | 559 | 0.970 [0.955, 0.984] | 0.007 | 0.200 | ya |
-| claude-opus-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 0.946 [0.936, 0.955] | 0.005 | 0.200 | ya |
-| claude-opus-5.5 | global_mmlu_full_id_cs_t0 | 792 | 0.939 [0.922, 0.956] | 0.008 | 0.200 | ya |
-| claude-opus-5.5 | indoculture_t0 | 2429 | 0.932 [0.922, 0.942] | 0.005 | 0.200 | ya |
-| claude-opus-5.5 | indommlu_t0 | 14904 | 0.857 [0.851, 0.862] | 0.003 | 0.200 | ya |
-| claude-sonnet-5.5 | copal_id_colloquial_t0 | 559 | 0.911 [0.886, 0.934] | 0.012 | 0.004 | ya |
-| claude-sonnet-5.5 | copal_id_standard_t0 | 559 | 0.946 [0.927, 0.964] | 0.010 | 0.002 | ya |
-| claude-sonnet-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 0.917 [0.905, 0.929] | 0.006 | 0.003 | ya |
-| claude-sonnet-5.5 | global_mmlu_full_id_cs_t0 | 792 | 0.881 [0.859, 0.904] | 0.011 | 0.004 | ya |
-| claude-sonnet-5.5 | indoculture_t0 | 2429 | 0.879 [0.866, 0.891] | 0.007 | 0.006 | ya |
-| claude-sonnet-5.5 | indommlu_t0 | 14904 | 0.812 [0.805, 0.818] | 0.003 | 0.002 | ya |
+| claude-haiku-5.5 | copal_id_colloquial_t0 | 559 | 0.809 [0.776, 0.841] | 0.017 | 0.500 | ya |
+| claude-haiku-5.5 | copal_id_standard_t0 | 559 | 0.846 [0.816, 0.875] | 0.015 | 0.500 | ya |
+| claude-haiku-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 0.809 [0.791, 0.826] | 0.009 | 0.250 | ya |
+| claude-haiku-5.5 | global_mmlu_full_id_cs_t0 | 792 | 0.758 [0.727, 0.787] | 0.015 | 0.250 | ya |
+| claude-haiku-5.5 | indoculture_t0 | 2429 | 0.762 [0.745, 0.779] | 0.009 | 0.333 | ya |
+| claude-haiku-5.5 | indommlu_t0 | 14904 | 0.711 [0.704, 0.718] | 0.004 | 0.235 | ya |
+| claude-opus-5.5 | copal_id_colloquial_t0 | 559 | 0.973 [0.959, 0.986] | 0.007 | 0.500 | ya |
+| claude-opus-5.5 | copal_id_standard_t0 | 559 | 0.970 [0.955, 0.984] | 0.007 | 0.500 | ya |
+| claude-opus-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 0.946 [0.936, 0.955] | 0.005 | 0.250 | ya |
+| claude-opus-5.5 | global_mmlu_full_id_cs_t0 | 792 | 0.939 [0.922, 0.956] | 0.008 | 0.250 | ya |
+| claude-opus-5.5 | indoculture_t0 | 2429 | 0.932 [0.922, 0.942] | 0.005 | 0.333 | ya |
+| claude-opus-5.5 | indommlu_t0 | 14904 | 0.857 [0.851, 0.862] | 0.003 | 0.235 | ya |
+| claude-sonnet-5.5 | copal_id_colloquial_t0 | 559 | 0.911 [0.886, 0.934] | 0.012 | 0.500 | ya |
+| claude-sonnet-5.5 | copal_id_standard_t0 | 559 | 0.946 [0.927, 0.964] | 0.010 | 0.500 | ya |
+| claude-sonnet-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 0.917 [0.905, 0.929] | 0.006 | 0.250 | ya |
+| claude-sonnet-5.5 | global_mmlu_full_id_cs_t0 | 792 | 0.881 [0.859, 0.904] | 0.011 | 0.250 | ya |
+| claude-sonnet-5.5 | indoculture_t0 | 2429 | 0.879 [0.866, 0.891] | 0.007 | 0.333 | ya |
+| claude-sonnet-5.5 | indommlu_t0 | 14904 | 0.812 [0.805, 0.818] | 0.003 | 0.235 | ya |
 
 ## b. Selisih pasangan (derived - base)
 
@@ -90,6 +90,42 @@ _Dilewati: `claude-sonnet-5.5` tidak ada di models.yaml, cek params dilewati_
 | indoculture_t0 | claude-opus-5.5 | claude-sonnet-5.5 | -0.054 | [-0.066, -0.041] | 0.0000 | ya | di bawah terbaik |
 | indommlu_t0 | claude-opus-5.5 | claude-haiku-5.5 | -0.145 | [-0.152, -0.139] | 0.0000 | ya | di bawah terbaik |
 | indommlu_t0 | claude-opus-5.5 | claude-sonnet-5.5 | -0.045 | [-0.050, -0.040] | 0.0000 | ya | di bawah terbaik |
+
+## j. CI berkelompok (cluster bootstrap, task berkluster saja)
+
+**a. Skor dengan CI iid vs CI berkelompok**
+
+| Model | Task | n item | n klaster | Skor [CI iid] | CI berkelompok | Rasio lebar (berkelompok / iid) |
+|---|---|---|---|---|---|---|
+| claude-haiku-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.809 [0.791, 0.826] | [0.775, 0.840] | 1.88x |
+| claude-haiku-5.5 | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.758 [0.727, 0.787] | [0.683, 0.823] | 2.35x |
+| claude-haiku-5.5 | indoculture_t0 | 2429 | 11 | 0.762 [0.745, 0.779] | [0.729, 0.797] | 2.03x |
+| claude-haiku-5.5 | indommlu_t0 | 14904 | 25 | 0.711 [0.704, 0.718] | [0.658, 0.754] | 6.62x |
+| claude-opus-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.946 [0.936, 0.955] | [0.919, 0.966] | 2.42x |
+| claude-opus-5.5 | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.939 [0.922, 0.956] | [0.913, 0.964] | 1.48x |
+| claude-opus-5.5 | indoculture_t0 | 2429 | 11 | 0.932 [0.922, 0.942] | [0.911, 0.951] | 2.01x |
+| claude-opus-5.5 | indommlu_t0 | 14904 | 25 | 0.857 [0.851, 0.862] | [0.837, 0.874] | 3.23x |
+| claude-sonnet-5.5 | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.917 [0.905, 0.929] | [0.891, 0.938] | 1.98x |
+| claude-sonnet-5.5 | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.881 [0.859, 0.904] | [0.835, 0.924] | 1.95x |
+| claude-sonnet-5.5 | indoculture_t0 | 2429 | 11 | 0.879 [0.866, 0.891] | [0.851, 0.906] | 2.14x |
+| claude-sonnet-5.5 | indommlu_t0 | 14904 | 25 | 0.812 [0.805, 0.818] | [0.782, 0.838] | 4.43x |
+
+**b1. Selisih pasangan derived - base (task berkluster)**
+
+_Dilewati: tidak ada pasangan derived-base berkluster di run ini._
+
+**b2. Semua model vs terbaik per task (task berkluster, Holm per task)**
+
+| Task | Terbaik | Model | Delta vs terbaik | CI iid | CI berkelompok | p berkelompok | Holm sig. berkelompok | Status iid | Status berkelompok | Berubah |
+|---|---|---|---|---|---|---|---|---|---|---|
+| global_mmlu_full_id_ca_t0 | claude-opus-5.5 | claude-haiku-5.5 | -0.137 | [-0.154, -0.121] | [-0.167, -0.110] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_ca_t0 | claude-opus-5.5 | claude-sonnet-5.5 | -0.028 | [-0.038, -0.018] | [-0.036, -0.021] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | claude-opus-5.5 | claude-haiku-5.5 | -0.182 | [-0.211, -0.153] | [-0.240, -0.130] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | claude-opus-5.5 | claude-sonnet-5.5 | -0.058 | [-0.078, -0.039] | [-0.084, -0.034] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indoculture_t0 | claude-opus-5.5 | claude-haiku-5.5 | -0.170 | [-0.188, -0.153] | [-0.192, -0.147] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indoculture_t0 | claude-opus-5.5 | claude-sonnet-5.5 | -0.054 | [-0.066, -0.041] | [-0.063, -0.042] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | claude-opus-5.5 | claude-haiku-5.5 | -0.145 | [-0.152, -0.139] | [-0.189, -0.112] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | claude-opus-5.5 | claude-sonnet-5.5 | -0.045 | [-0.050, -0.040] | [-0.061, -0.031] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
 
 ## h. Fertilitas tokenizer
 

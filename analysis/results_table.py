@@ -155,11 +155,11 @@ def main() -> None:
     open_scores = load_scores(res / "summary.csv")
     render(OPEN_MODELS, open_scores, load_ties(res / "best_per_task.csv"), res / "results_table.png",
            "Accuracy, zero-shot. Bold: highest. Shaded: highest and models not significantly below it "
-           "(paired bootstrap, Holm per task). ±: 95% CI. GoTo models outlined. Details: results/summary.md")
+           "(paired bootstrap, Holm per task). ±: 95% CI over items. GoTo models outlined. Details: results/summary.md")
     render(CLAUDE_MODELS, {**load_scores(res / "claude/summary.csv"), **open_scores},
            load_ties(res / "claude/best_per_task.csv"), res / "claude_table.png",
            "Accuracy, zero-shot, generative (letter taken from the answer). Bold: highest. Shaded: not "
-           "significantly below it (Holm). ±: 95% CI. Grey column: loglikelihood, reference only.",
+           "significantly below it (Holm). ±: 95% item CI. Grey column: loglikelihood, reference only.",
            reference=REFERENCE, cost=CLAUDE_COST)
 
 

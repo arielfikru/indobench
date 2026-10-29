@@ -1,0 +1,53 @@
+kind,model,ref,task,n_items,n_clusters,delta,iid_lo,iid_hi,cl_lo,cl_hi,width_ratio,p_iid,p_cluster,verdict_iid,verdict_cluster,changed
+ci,gemma2-9b-it,,global_mmlu_full_id_ca_t0,2058,55,0.637998,0.616618,0.658406,0.599724,0.675012,1.801654,,,,,
+ci,gemma2-9b-it,,global_mmlu_full_id_cs_t0,792,45,0.688131,0.655303,0.719729,0.618596,0.751763,2.066987,,,,,
+ci,gemma2-9b-it,,indoculture_t0,2429,11,0.675175,0.656649,0.693289,0.627631,0.732769,2.869440,,,,,
+ci,gemma2-9b-it,,indommlu_t0,14904,25,0.611983,0.604200,0.619834,0.545268,0.661966,7.464699,,,,,
+ci,gemma3-27b-it,,global_mmlu_full_id_ca_t0,2058,55,0.711856,0.691934,0.731293,0.672872,0.749876,1.956453,,,,,
+ci,gemma3-27b-it,,global_mmlu_full_id_cs_t0,792,45,0.743687,0.713384,0.772727,0.682411,0.802227,2.019021,,,,,
+ci,gemma3-27b-it,,indoculture_t0,2429,11,0.736517,0.718814,0.754220,0.697544,0.778355,2.282418,,,,,
+ci,gemma3-27b-it,,indommlu_t0,14904,25,0.671833,0.664520,0.679348,0.611609,0.715316,6.993888,,,,,
+ci,gemma4-12b-it,,global_mmlu_full_id_ca_t0,2058,55,0.707483,0.688047,0.726931,0.672316,0.742349,1.801021,,,,,
+ci,gemma4-12b-it,,global_mmlu_full_id_cs_t0,792,45,0.670455,0.638889,0.703283,0.602010,0.731946,2.017833,,,,,
+ci,gemma4-12b-it,,indoculture_t0,2429,11,0.722931,0.704817,0.741046,0.679555,0.774675,2.625526,,,,,
+ci,gemma4-12b-it,,indommlu_t0,14904,25,0.683709,0.676329,0.690955,0.616360,0.731067,7.842226,,,,,
+ci,gotoai-gemma3-27b-it,,global_mmlu_full_id_ca_t0,2058,55,0.706997,0.687075,0.725960,0.664612,0.747908,2.142127,,,,,
+ci,gotoai-gemma3-27b-it,,global_mmlu_full_id_cs_t0,792,45,0.742424,0.712121,0.772727,0.679285,0.802576,2.034297,,,,,
+ci,gotoai-gemma3-27b-it,,indoculture_t0,2429,11,0.741046,0.723744,0.757925,0.702207,0.781787,2.328219,,,,,
+ci,gotoai-gemma3-27b-it,,indommlu_t0,14904,25,0.676261,0.668881,0.683642,0.616911,0.718037,6.850798,,,,,
+ci,qwen3.8-27b,,global_mmlu_full_id_ca_t0,2058,55,0.792517,0.775024,0.809524,0.757369,0.827409,2.030179,,,,,
+ci,qwen3.8-27b,,global_mmlu_full_id_cs_t0,792,45,0.771465,0.742424,0.800505,0.713156,0.826999,1.960084,,,,,
+ci,qwen3.8-27b,,indoculture_t0,2429,11,0.741457,0.724166,0.758748,0.697832,0.790272,2.673056,,,,,
+ci,qwen3.8-27b,,indommlu_t0,14904,25,0.713969,0.706723,0.721216,0.650894,0.759531,7.495919,,,,,
+ci,sahabatai-gemma2-9b-it,,global_mmlu_full_id_ca_t0,2058,55,0.643829,0.622449,0.664237,0.599185,0.687429,2.111700,,,,,
+ci,sahabatai-gemma2-9b-it,,global_mmlu_full_id_cs_t0,792,45,0.723485,0.691919,0.753788,0.649725,0.787799,2.231726,,,,,
+ci,sahabatai-gemma2-9b-it,,indoculture_t0,2429,11,0.698641,0.680115,0.716756,0.656165,0.749895,2.558102,,,,,
+ci,sahabatai-gemma2-9b-it,,indommlu_t0,14904,25,0.635802,0.628219,0.643520,0.574033,0.682493,7.088309,,,,,
+pair,gotoai-gemma3-27b-it,gemma3-27b-it,global_mmlu_full_id_ca_t0,2058,55,-0.004859,-0.012634,0.002915,-0.011998,0.002102,0.906824,0.231200,0.208000,tidak bermakna,tidak bermakna,tidak
+pair,gotoai-gemma3-27b-it,gemma3-27b-it,global_mmlu_full_id_cs_t0,792,45,-0.001263,-0.015152,0.011364,-0.014574,0.012397,1.017207,0.923400,0.910600,tidak bermakna,tidak bermakna,tidak
+pair,gotoai-gemma3-27b-it,gemma3-27b-it,indoculture_t0,2429,11,0.004529,-0.003294,0.012351,-0.002984,0.012018,0.958957,0.275600,0.270200,tidak bermakna,tidak bermakna,tidak
+pair,gotoai-gemma3-27b-it,gemma3-27b-it,indommlu_t0,14904,25,0.004428,0.001006,0.007783,0.000900,0.008958,1.189129,0.011400,0.008200,bermakna,bermakna,tidak
+pair,sahabatai-gemma2-9b-it,gemma2-9b-it,global_mmlu_full_id_ca_t0,2058,55,0.005831,-0.008746,0.019922,-0.010589,0.022354,1.149099,0.440200,0.501000,tidak bermakna,tidak bermakna,tidak
+pair,sahabatai-gemma2-9b-it,gemma2-9b-it,global_mmlu_full_id_cs_t0,792,45,0.035354,0.012626,0.058081,0.012129,0.056373,0.973358,0.002000,0.004200,bermakna,bermakna,tidak
+pair,sahabatai-gemma2-9b-it,gemma2-9b-it,indoculture_t0,2429,11,0.023466,0.010292,0.036229,0.009506,0.037843,1.092521,0.000200,0.000400,bermakna,bermakna,tidak
+pair,sahabatai-gemma2-9b-it,gemma2-9b-it,indommlu_t0,14904,25,0.023819,0.018250,0.029455,0.012587,0.037959,2.264339,0.000000,0.000000,bermakna,bermakna,tidak
+best,gemma2-9b-it,qwen3.8-27b,global_mmlu_full_id_ca_t0,2058,55,-0.154519,-0.175413,-0.134111,-0.175457,-0.132812,1.032523,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma3-27b-it,qwen3.8-27b,global_mmlu_full_id_ca_t0,2058,55,-0.080661,-0.098154,-0.063168,-0.101531,-0.060288,1.178858,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma4-12b-it,qwen3.8-27b,global_mmlu_full_id_ca_t0,2058,55,-0.085034,-0.103984,-0.066084,-0.106263,-0.064388,1.104866,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gotoai-gemma3-27b-it,qwen3.8-27b,global_mmlu_full_id_ca_t0,2058,55,-0.085520,-0.103499,-0.068027,-0.106811,-0.064870,1.182392,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,sahabatai-gemma2-9b-it,qwen3.8-27b,global_mmlu_full_id_ca_t0,2058,55,-0.148688,-0.169096,-0.129252,-0.173914,-0.123502,1.265202,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma2-9b-it,qwen3.8-27b,global_mmlu_full_id_cs_t0,792,45,-0.083333,-0.114899,-0.051768,-0.117167,-0.048846,1.082196,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma3-27b-it,qwen3.8-27b,global_mmlu_full_id_cs_t0,792,45,-0.027778,-0.056818,0.002525,-0.062919,0.006608,1.171598,0.082000,0.123000,seri dengan terbaik,seri dengan terbaik,tidak
+best,gemma4-12b-it,qwen3.8-27b,global_mmlu_full_id_cs_t0,792,45,-0.101010,-0.132576,-0.070707,-0.130368,-0.072096,0.941874,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gotoai-gemma3-27b-it,qwen3.8-27b,global_mmlu_full_id_cs_t0,792,45,-0.029040,-0.059343,0.001263,-0.064752,0.005084,1.152292,0.070800,0.106200,seri dengan terbaik,seri dengan terbaik,tidak
+best,sahabatai-gemma2-9b-it,qwen3.8-27b,global_mmlu_full_id_cs_t0,792,45,-0.047980,-0.079545,-0.017677,-0.086125,-0.012556,1.189126,0.002400,0.007200,di bawah terbaik,di bawah terbaik,tidak
+best,gemma2-9b-it,qwen3.8-27b,indoculture_t0,2429,11,-0.066282,-0.086044,-0.046933,-0.088120,-0.043657,1.136838,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma3-27b-it,qwen3.8-27b,indoculture_t0,2429,11,-0.004940,-0.022643,0.013174,-0.021092,0.010323,0.877094,0.615200,0.569800,seri dengan terbaik,seri dengan terbaik,tidak
+best,gemma4-12b-it,qwen3.8-27b,indoculture_t0,2429,11,-0.018526,-0.037052,0.000000,-0.035082,0.000000,0.946822,0.052200,0.052000,seri dengan terbaik,seri dengan terbaik,tidak
+best,gotoai-gemma3-27b-it,qwen3.8-27b,indoculture_t0,2429,11,-0.000412,-0.017703,0.017291,-0.014395,0.013335,0.792400,0.990800,0.987000,seri dengan terbaik,seri dengan terbaik,tidak
+best,sahabatai-gemma2-9b-it,qwen3.8-27b,indoculture_t0,2429,11,-0.042816,-0.061754,-0.023466,-0.055156,-0.028204,0.703950,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma2-9b-it,qwen3.8-27b,indommlu_t0,14904,25,-0.101986,-0.109771,-0.094404,-0.116006,-0.088464,1.792299,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma3-27b-it,qwen3.8-27b,indommlu_t0,14904,25,-0.042136,-0.048980,-0.035425,-0.048768,-0.034146,1.078743,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gemma4-12b-it,qwen3.8-27b,indommlu_t0,14904,25,-0.030260,-0.037171,-0.023484,-0.045148,-0.018561,1.942422,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,gotoai-gemma3-27b-it,qwen3.8-27b,indommlu_t0,14904,25,-0.037708,-0.044552,-0.030931,-0.047066,-0.025876,1.555739,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,sahabatai-gemma2-9b-it,qwen3.8-27b,indommlu_t0,14904,25,-0.078167,-0.085615,-0.071055,-0.088712,-0.065495,1.594595,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak

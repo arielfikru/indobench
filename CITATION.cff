@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use indobench, its results or code, please cite it as below."
+title: "indobench: an evaluation study of Indonesian LLMs"
+type: software
+authors:
+  - alias: arielfikru
+repository-code: "https://github.com/arielfikru/indobench"
+license: Apache-2.0
+version: "0.1.0"
+date-released: "2026-10-29"
+keywords:
+  - Indonesian
+  - large language models
+  - evaluation
+  - benchmark

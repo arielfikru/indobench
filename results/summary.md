@@ -13,37 +13,37 @@
 | gemma2-9b-it | global_mmlu_full_id_ca_t0 | 2058 | 0.638 [0.617, 0.658] | 0.011 | 0.250 | ya |
 | gemma2-9b-it | global_mmlu_full_id_cs_t0 | 792 | 0.688 [0.655, 0.720] | 0.016 | 0.250 | ya |
 | gemma2-9b-it | indoculture_t0 | 2429 | 0.675 [0.657, 0.693] | 0.010 | 0.333 | ya |
-| gemma2-9b-it | indommlu_t0 | 14904 | 0.612 [0.604, 0.620] | 0.004 | 0.200 | ya |
+| gemma2-9b-it | indommlu_t0 | 14904 | 0.612 [0.604, 0.620] | 0.004 | 0.235 | ya |
 | gemma3-27b-it | copal_id_colloquial_t0 | 559 | 0.830 [0.800, 0.860] | 0.016 | 0.500 | ya |
 | gemma3-27b-it | copal_id_standard_t0 | 559 | 0.866 [0.837, 0.894] | 0.014 | 0.500 | ya |
 | gemma3-27b-it | global_mmlu_full_id_ca_t0 | 2058 | 0.712 [0.692, 0.731] | 0.010 | 0.250 | ya |
 | gemma3-27b-it | global_mmlu_full_id_cs_t0 | 792 | 0.744 [0.713, 0.773] | 0.016 | 0.250 | ya |
 | gemma3-27b-it | indoculture_t0 | 2429 | 0.737 [0.719, 0.754] | 0.009 | 0.333 | ya |
-| gemma3-27b-it | indommlu_t0 | 14904 | 0.672 [0.665, 0.679] | 0.004 | 0.200 | ya |
+| gemma3-27b-it | indommlu_t0 | 14904 | 0.672 [0.665, 0.679] | 0.004 | 0.235 | ya |
 | gemma4-12b-it | copal_id_colloquial_t0 | 559 | 0.814 [0.782, 0.846] | 0.016 | 0.500 | ya |
 | gemma4-12b-it | copal_id_standard_t0 | 559 | 0.860 [0.830, 0.887] | 0.015 | 0.500 | ya |
 | gemma4-12b-it | global_mmlu_full_id_ca_t0 | 2058 | 0.707 [0.688, 0.727] | 0.010 | 0.250 | ya |
 | gemma4-12b-it | global_mmlu_full_id_cs_t0 | 792 | 0.670 [0.639, 0.703] | 0.017 | 0.250 | ya |
 | gemma4-12b-it | indoculture_t0 | 2429 | 0.723 [0.705, 0.741] | 0.009 | 0.333 | ya |
-| gemma4-12b-it | indommlu_t0 | 14904 | 0.684 [0.676, 0.691] | 0.004 | 0.200 | ya |
+| gemma4-12b-it | indommlu_t0 | 14904 | 0.684 [0.676, 0.691] | 0.004 | 0.235 | ya |
 | gotoai-gemma3-27b-it | copal_id_colloquial_t0 | 559 | 0.837 [0.807, 0.868] | 0.016 | 0.500 | ya |
 | gotoai-gemma3-27b-it | copal_id_standard_t0 | 559 | 0.871 [0.843, 0.898] | 0.014 | 0.500 | ya |
 | gotoai-gemma3-27b-it | global_mmlu_full_id_ca_t0 | 2058 | 0.707 [0.687, 0.726] | 0.010 | 0.250 | ya |
 | gotoai-gemma3-27b-it | global_mmlu_full_id_cs_t0 | 792 | 0.742 [0.712, 0.773] | 0.016 | 0.250 | ya |
 | gotoai-gemma3-27b-it | indoculture_t0 | 2429 | 0.741 [0.724, 0.758] | 0.009 | 0.333 | ya |
-| gotoai-gemma3-27b-it | indommlu_t0 | 14904 | 0.676 [0.669, 0.684] | 0.004 | 0.200 | ya |
+| gotoai-gemma3-27b-it | indommlu_t0 | 14904 | 0.676 [0.669, 0.684] | 0.004 | 0.235 | ya |
 | qwen3.8-27b | copal_id_colloquial_t0 | 559 | 0.823 [0.791, 0.853] | 0.016 | 0.500 | ya |
 | qwen3.8-27b | copal_id_standard_t0 | 559 | 0.864 [0.835, 0.893] | 0.015 | 0.500 | ya |
 | qwen3.8-27b | global_mmlu_full_id_ca_t0 | 2058 | 0.793 [0.775, 0.810] | 0.009 | 0.250 | ya |
 | qwen3.8-27b | global_mmlu_full_id_cs_t0 | 792 | 0.771 [0.742, 0.801] | 0.015 | 0.250 | ya |
 | qwen3.8-27b | indoculture_t0 | 2429 | 0.741 [0.724, 0.759] | 0.009 | 0.333 | ya |
-| qwen3.8-27b | indommlu_t0 | 14904 | 0.714 [0.707, 0.721] | 0.004 | 0.200 | ya |
+| qwen3.8-27b | indommlu_t0 | 14904 | 0.714 [0.707, 0.721] | 0.004 | 0.235 | ya |
 | sahabatai-gemma2-9b-it | copal_id_colloquial_t0 | 559 | 0.800 [0.766, 0.832] | 0.017 | 0.500 | ya |
 | sahabatai-gemma2-9b-it | copal_id_standard_t0 | 559 | 0.816 [0.782, 0.848] | 0.016 | 0.500 | ya |
 | sahabatai-gemma2-9b-it | global_mmlu_full_id_ca_t0 | 2058 | 0.644 [0.622, 0.664] | 0.011 | 0.250 | ya |
 | sahabatai-gemma2-9b-it | global_mmlu_full_id_cs_t0 | 792 | 0.723 [0.692, 0.754] | 0.016 | 0.250 | ya |
 | sahabatai-gemma2-9b-it | indoculture_t0 | 2429 | 0.699 [0.680, 0.717] | 0.009 | 0.333 | ya |
-| sahabatai-gemma2-9b-it | indommlu_t0 | 14904 | 0.636 [0.628, 0.644] | 0.004 | 0.200 | ya |
+| sahabatai-gemma2-9b-it | indommlu_t0 | 14904 | 0.636 [0.628, 0.644] | 0.004 | 0.235 | ya |
 
 ## b. Selisih pasangan (derived - base)
 
@@ -161,6 +161,75 @@ Tidak ada model >= 20B yang skornya dalam 5 poin dari random.
 | indommlu_t0 | qwen3.8-27b | gemma4-12b-it | -0.030 | [-0.037, -0.023] | 0.0000 | ya | di bawah terbaik |
 | indommlu_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.038 | [-0.045, -0.031] | 0.0000 | ya | di bawah terbaik |
 | indommlu_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.078 | [-0.086, -0.071] | 0.0000 | ya | di bawah terbaik |
+
+## j. CI berkelompok (cluster bootstrap, task berkluster saja)
+
+**a. Skor dengan CI iid vs CI berkelompok**
+
+| Model | Task | n item | n klaster | Skor [CI iid] | CI berkelompok | Rasio lebar (berkelompok / iid) |
+|---|---|---|---|---|---|---|
+| gemma2-9b-it | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.638 [0.617, 0.658] | [0.600, 0.675] | 1.80x |
+| gemma2-9b-it | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.688 [0.655, 0.720] | [0.619, 0.752] | 2.07x |
+| gemma2-9b-it | indoculture_t0 | 2429 | 11 | 0.675 [0.657, 0.693] | [0.628, 0.733] | 2.87x |
+| gemma2-9b-it | indommlu_t0 | 14904 | 25 | 0.612 [0.604, 0.620] | [0.545, 0.662] | 7.46x |
+| gemma3-27b-it | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.712 [0.692, 0.731] | [0.673, 0.750] | 1.96x |
+| gemma3-27b-it | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.744 [0.713, 0.773] | [0.682, 0.802] | 2.02x |
+| gemma3-27b-it | indoculture_t0 | 2429 | 11 | 0.737 [0.719, 0.754] | [0.698, 0.778] | 2.28x |
+| gemma3-27b-it | indommlu_t0 | 14904 | 25 | 0.672 [0.665, 0.679] | [0.612, 0.715] | 6.99x |
+| gemma4-12b-it | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.707 [0.688, 0.727] | [0.672, 0.742] | 1.80x |
+| gemma4-12b-it | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.670 [0.639, 0.703] | [0.602, 0.732] | 2.02x |
+| gemma4-12b-it | indoculture_t0 | 2429 | 11 | 0.723 [0.705, 0.741] | [0.680, 0.775] | 2.63x |
+| gemma4-12b-it | indommlu_t0 | 14904 | 25 | 0.684 [0.676, 0.691] | [0.616, 0.731] | 7.84x |
+| gotoai-gemma3-27b-it | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.707 [0.687, 0.726] | [0.665, 0.748] | 2.14x |
+| gotoai-gemma3-27b-it | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.742 [0.712, 0.773] | [0.679, 0.803] | 2.03x |
+| gotoai-gemma3-27b-it | indoculture_t0 | 2429 | 11 | 0.741 [0.724, 0.758] | [0.702, 0.782] | 2.33x |
+| gotoai-gemma3-27b-it | indommlu_t0 | 14904 | 25 | 0.676 [0.669, 0.684] | [0.617, 0.718] | 6.85x |
+| qwen3.8-27b | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.793 [0.775, 0.810] | [0.757, 0.827] | 2.03x |
+| qwen3.8-27b | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.771 [0.742, 0.801] | [0.713, 0.827] | 1.96x |
+| qwen3.8-27b | indoculture_t0 | 2429 | 11 | 0.741 [0.724, 0.759] | [0.698, 0.790] | 2.67x |
+| qwen3.8-27b | indommlu_t0 | 14904 | 25 | 0.714 [0.707, 0.721] | [0.651, 0.760] | 7.50x |
+| sahabatai-gemma2-9b-it | global_mmlu_full_id_ca_t0 | 2058 | 55 | 0.644 [0.622, 0.664] | [0.599, 0.687] | 2.11x |
+| sahabatai-gemma2-9b-it | global_mmlu_full_id_cs_t0 | 792 | 45 | 0.723 [0.692, 0.754] | [0.650, 0.788] | 2.23x |
+| sahabatai-gemma2-9b-it | indoculture_t0 | 2429 | 11 | 0.699 [0.680, 0.717] | [0.656, 0.750] | 2.56x |
+| sahabatai-gemma2-9b-it | indommlu_t0 | 14904 | 25 | 0.636 [0.628, 0.644] | [0.574, 0.682] | 7.09x |
+
+**b1. Selisih pasangan derived - base (task berkluster)**
+
+| Derived | Base | Task | n klaster | Delta | CI iid | CI berkelompok | p berkelompok | Status iid | Status berkelompok | Berubah |
+|---|---|---|---|---|---|---|---|---|---|---|
+| gotoai-gemma3-27b-it | gemma3-27b-it | global_mmlu_full_id_ca_t0 | 55 | -0.005 | [-0.013, 0.003] | [-0.012, 0.002] | 0.2080 | tidak bermakna | tidak bermakna | tidak |
+| gotoai-gemma3-27b-it | gemma3-27b-it | global_mmlu_full_id_cs_t0 | 45 | -0.001 | [-0.015, 0.011] | [-0.015, 0.012] | 0.9106 | tidak bermakna | tidak bermakna | tidak |
+| gotoai-gemma3-27b-it | gemma3-27b-it | indoculture_t0 | 11 | +0.005 | [-0.003, 0.012] | [-0.003, 0.012] | 0.2702 | tidak bermakna | tidak bermakna | tidak |
+| gotoai-gemma3-27b-it | gemma3-27b-it | indommlu_t0 | 25 | +0.004 | [0.001, 0.008] | [0.001, 0.009] | 0.0082 | bermakna | bermakna | tidak |
+| sahabatai-gemma2-9b-it | gemma2-9b-it | global_mmlu_full_id_ca_t0 | 55 | +0.006 | [-0.009, 0.020] | [-0.011, 0.022] | 0.5010 | tidak bermakna | tidak bermakna | tidak |
+| sahabatai-gemma2-9b-it | gemma2-9b-it | global_mmlu_full_id_cs_t0 | 45 | +0.035 | [0.013, 0.058] | [0.012, 0.056] | 0.0042 | bermakna | bermakna | tidak |
+| sahabatai-gemma2-9b-it | gemma2-9b-it | indoculture_t0 | 11 | +0.023 | [0.010, 0.036] | [0.010, 0.038] | 0.0004 | bermakna | bermakna | tidak |
+| sahabatai-gemma2-9b-it | gemma2-9b-it | indommlu_t0 | 25 | +0.024 | [0.018, 0.029] | [0.013, 0.038] | 0.0000 | bermakna | bermakna | tidak |
+
+**b2. Semua model vs terbaik per task (task berkluster, Holm per task)**
+
+| Task | Terbaik | Model | Delta vs terbaik | CI iid | CI berkelompok | p berkelompok | Holm sig. berkelompok | Status iid | Status berkelompok | Berubah |
+|---|---|---|---|---|---|---|---|---|---|---|
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gemma2-9b-it | -0.155 | [-0.175, -0.134] | [-0.175, -0.133] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gemma3-27b-it | -0.081 | [-0.098, -0.063] | [-0.102, -0.060] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gemma4-12b-it | -0.085 | [-0.104, -0.066] | [-0.106, -0.064] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.086 | [-0.103, -0.068] | [-0.107, -0.065] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_ca_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.149 | [-0.169, -0.129] | [-0.174, -0.124] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gemma2-9b-it | -0.083 | [-0.115, -0.052] | [-0.117, -0.049] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gemma3-27b-it | -0.028 | [-0.057, 0.003] | [-0.063, 0.007] | 0.1230 | tidak | seri dengan terbaik | seri dengan terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gemma4-12b-it | -0.101 | [-0.133, -0.071] | [-0.130, -0.072] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.029 | [-0.059, 0.001] | [-0.065, 0.005] | 0.1062 | tidak | seri dengan terbaik | seri dengan terbaik | tidak |
+| global_mmlu_full_id_cs_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.048 | [-0.080, -0.018] | [-0.086, -0.013] | 0.0072 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indoculture_t0 | qwen3.8-27b | gemma2-9b-it | -0.066 | [-0.086, -0.047] | [-0.088, -0.044] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indoculture_t0 | qwen3.8-27b | gemma3-27b-it | -0.005 | [-0.023, 0.013] | [-0.021, 0.010] | 0.5698 | tidak | seri dengan terbaik | seri dengan terbaik | tidak |
+| indoculture_t0 | qwen3.8-27b | gemma4-12b-it | -0.019 | [-0.037, 0.000] | [-0.035, 0.000] | 0.0520 | tidak | seri dengan terbaik | seri dengan terbaik | tidak |
+| indoculture_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.000 | [-0.018, 0.017] | [-0.014, 0.013] | 0.9870 | tidak | seri dengan terbaik | seri dengan terbaik | tidak |
+| indoculture_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.043 | [-0.062, -0.023] | [-0.055, -0.028] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | qwen3.8-27b | gemma2-9b-it | -0.102 | [-0.110, -0.094] | [-0.116, -0.088] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | qwen3.8-27b | gemma3-27b-it | -0.042 | [-0.049, -0.035] | [-0.049, -0.034] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | qwen3.8-27b | gemma4-12b-it | -0.030 | [-0.037, -0.023] | [-0.045, -0.019] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | qwen3.8-27b | gotoai-gemma3-27b-it | -0.038 | [-0.045, -0.031] | [-0.047, -0.026] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
+| indommlu_t0 | qwen3.8-27b | sahabatai-gemma2-9b-it | -0.078 | [-0.086, -0.071] | [-0.089, -0.065] | 0.0000 | ya | di bawah terbaik | di bawah terbaik | tidak |
 
 ## h. Fertilitas tokenizer
 

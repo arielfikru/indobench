@@ -3,12 +3,14 @@
 
 Contoh (dari root repo):
     python analysis/summarize.py --results results/runs --run-id <id> [--compare-run <id2>] --metric acc --out results/
+    python analysis/summarize.py --predictions results/predictions/<id> --run-id <id> --out results/
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import json
 import math
 import re
@@ -19,7 +21,15 @@ from typing import Any
 import numpy as np
 import yaml
 
-from stats import bootstrap_ci, holm, paired_bootstrap_delta, stderr, unpaired_bootstrap_delta
+from stats import (
+    bootstrap_ci,
+    cluster_bootstrap_ci,
+    holm,
+    paired_bootstrap_delta,
+    paired_cluster_bootstrap_delta,
+    stderr,
+    unpaired_bootstrap_delta,
+)
 
 REPO = Path(__file__).resolve().parent.parent
 SAMPLES_RE = re.compile(r"^samples_(?P<task>.+)_(?P<ts>\d{4}-\d{2}-\d{2}T[\d.-]+)\.jsonl$")
@@ -36,6 +46,7 @@ class Samples:
     values: dict[Any, float]
     targets: dict[Any, str]
     n_choices: int | None
+    clusters: dict[Any, str] | None = None  # doc_id -> cluster label; None when the task is not clustered
 
 
 @dataclass
@@ -94,7 +105,8 @@ def load_samples(path: Path, metric: str) -> tuple[Samples | None, str | None]:
             return None, f"metrik `{metric}` tidak ada di {path.name}"
         values[doc_id] = float(r[metric])
         targets[doc_id] = str(r.get("target"))
-        if n_choices is None and len(r.get("resps") or []) > 1:
+        # lm_eval: resps is one list per choice; API runs store the response text there instead.
+        if n_choices is None and isinstance(r.get("resps"), list) and len(r["resps"]) > 1:
             n_choices = len(r["resps"])
     return Samples(values, targets, n_choices), None
 
@@ -137,6 +149,43 @@ def load_run(results_root: Path, run_id: str, metric: str, notes: list[str]) -> 
     return data
 
 
+def load_predictions(pred_dir: Path, notes: list[str]) -> RunData:
+    """Muat run dari CSV hasil export_predictions.py: results/predictions/<run-id>/<model>/<task>.csv.gz."""
+    if not pred_dir.is_dir():
+        notes.append(f"folder prediksi `{pred_dir}` tidak ditemukan")
+        return {}
+    data: RunData = {}
+    for model_dir in visible_dirs(pred_dir):
+        tasks = {p.name.removesuffix(".csv.gz"): load_prediction_csv(p) for p in sorted(model_dir.glob("*.csv.gz"))}
+        if not tasks:
+            notes.append(f"`{model_dir.name}` di `{pred_dir}` tidak punya prediksi")
+        data[model_dir.name] = tasks
+    return data
+
+
+def load_prediction_csv(path: Path) -> Samples:
+    """Kolom correct sama dengan metrik acc di samples jsonl, jadi hanya acc yang didukung."""
+    values: dict[Any, float] = {}
+    targets: dict[Any, str] = {}
+    clusters: dict[Any, str] = {}
+    empty_clusters = 0
+    n_choices: int | None = None
+    with gzip.open(path, "rt", encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            doc_id = int(row["doc_id"])
+            values[doc_id] = float(row["correct"])
+            targets[doc_id] = row["target"]
+            if row.get("cluster"):
+                clusters[doc_id] = row["cluster"]
+            else:
+                empty_clusters += 1
+            if n_choices is None and row["n_choices"]:
+                n_choices = int(row["n_choices"])
+    if clusters and empty_clusters:
+        raise ValueError(f"{path.name}: kolom cluster terisi sebagian ({len(clusters)} terisi, {empty_clusters} kosong)")
+    return Samples(values, targets, n_choices, clusters or None)
+
+
 def collect_task_meta(node: Any, out: dict[str, dict[str, Any]]) -> None:
     """Loosely find per-task metadata (n_options / random_baseline) anywhere in tasks.yaml."""
     if isinstance(node, dict):
@@ -144,6 +193,8 @@ def collect_task_meta(node: Any, out: dict[str, dict[str, Any]]) -> None:
             name = next((node[k] for k in META_NAME_KEYS if isinstance(node.get(k), str)), None)
             if name:
                 out.setdefault(name, node)
+            for task in node.get("lm_eval_tasks") or []:  # benchmark entries list their lm_eval tasks
+                out.setdefault(task, node)
         for key, value in node.items():
             if isinstance(key, str) and isinstance(value, dict) and any(k in value for k in META_KEYS):
                 out.setdefault(key, value)
@@ -399,9 +450,138 @@ def section_best(run: RunData, best_rows: list[dict[str, Any]]) -> list[str]:
     return lines
 
 
+def aligned_clustered(a: Samples, b: Samples) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Like aligned(), plus the cluster label of each aligned doc_id (taken from a; b must agree)."""
+    common = sorted(set(a.values) & set(b.values), key=str)
+    cl_a = a.clusters or {}
+    cl_b = b.clusters or {}
+    if any(cl_a.get(k) != cl_b.get(k) for k in common):
+        raise ValueError("label cluster a dan b tidak sama untuk doc_id yang sama")
+    return (np.array([a.values[k] for k in common], dtype=float),
+            np.array([b.values[k] for k in common], dtype=float),
+            np.array([cl_a[k] for k in common], dtype=object))
+
+
+def ratio_text(r: float) -> str:
+    return "-" if math.isnan(r) else f"{r:.2f}x"
+
+
+CLUSTERED_FIELDS = ["kind", "model", "ref", "task", "n_items", "n_clusters", "delta", "iid_lo", "iid_hi",
+                    "cl_lo", "cl_hi", "width_ratio", "p_iid", "p_cluster", "verdict_iid", "verdict_cluster",
+                    "changed"]
+
+
+def section_clustered(run: RunData, models: dict[str, Any], rows: list[dict[str, Any]]) -> list[str]:
+    """Item-level CI vs cluster-bootstrap CI for clustered tasks only (IndoMMLU, Global-MMLU, IndoCulture).
+
+    Rows (kind): "ci" per model x task, "pair" for the derived-base comparisons in models.yaml,
+    "best" for every model vs the best model on the task (Holm within the task, as in section_best).
+    """
+    lines: list[str] = []
+
+    # (a) CI per model x clustered task.
+    table = []
+    for model, tasks in run.items():
+        for task, s in sorted(tasks.items()):
+            if not s.clusters:
+                continue
+            keys = sorted(s.values, key=str)
+            vals = np.array([s.values[k] for k in keys], dtype=float)
+            cl = np.array([s.clusters[k] for k in keys], dtype=object)
+            score, lo_i, hi_i = bootstrap_ci(vals, n=N_BOOT, seed=SEED)
+            _, lo_c, hi_c = cluster_bootstrap_ci(vals, cl, n_boot=N_BOOT, seed=SEED)
+            n_cl = len(set(cl.tolist()))
+            ratio = (hi_c - lo_c) / (hi_i - lo_i)
+            rows.append({"kind": "ci", "model": model, "ref": "", "task": task, "n_items": vals.size,
+                         "n_clusters": n_cl, "delta": score, "iid_lo": lo_i, "iid_hi": hi_i, "cl_lo": lo_c,
+                         "cl_hi": hi_c, "width_ratio": ratio, "p_iid": None, "p_cluster": None,
+                         "verdict_iid": "", "verdict_cluster": "", "changed": ""})
+            table.append([model, task, str(vals.size), str(n_cl), f"{f3(score)} {ci_text(lo_i, hi_i)}",
+                          f"{ci_text(lo_c, hi_c)}", ratio_text(ratio)])
+    lines += ["**a. Skor dengan CI iid vs CI berkelompok**", ""]
+    lines += md_table(["Model", "Task", "n item", "n klaster", "Skor [CI iid]", "CI berkelompok",
+                       "Rasio lebar (berkelompok / iid)"], table) if table else ["_Dilewati: tidak ada task berkluster._"]
+    lines.append("")
+
+    # (b1) CPT pairs from models.yaml, clustered tasks only.
+    table, notes = [], []
+    for key, cfg in models.items():
+        pair = (cfg or {}).get("pair") or {}
+        if pair.get("role") != "derived":
+            continue
+        base = pair.get("base")
+        if key not in run or base not in run:
+            continue
+        for task in sorted(set(run[key]) & set(run[base])):
+            a, b = run[key][task], run[base][task]
+            if not (a.clusters and b.clusters):
+                continue
+            xa, xb, cl = aligned_clustered(a, b)
+            if xa.size == 0:
+                notes.append(f"`{key}` vs `{base}` / {task}: tidak ada doc_id yang sama")
+                continue
+            delta, lo_i, hi_i, p_i = paired_bootstrap_delta(xa, xb, n=N_BOOT, seed=SEED)
+            _, lo_c, hi_c, p_c = paired_cluster_bootstrap_delta(xa, xb, cl, n_boot=N_BOOT, seed=SEED)
+            v_i, v_c = verdict(lo_i, hi_i), verdict(lo_c, hi_c)
+            changed = v_i != v_c
+            n_cl = len(set(cl.tolist()))
+            rows.append({"kind": "pair", "model": key, "ref": base, "task": task, "n_items": xa.size,
+                         "n_clusters": n_cl, "delta": delta, "iid_lo": lo_i, "iid_hi": hi_i, "cl_lo": lo_c,
+                         "cl_hi": hi_c, "width_ratio": (hi_c - lo_c) / (hi_i - lo_i), "p_iid": p_i,
+                         "p_cluster": p_c, "verdict_iid": v_i, "verdict_cluster": v_c,
+                         "changed": "ya" if changed else "tidak"})
+            table.append([key, base, task, str(n_cl), f"{delta:+.3f}", ci_text(lo_i, hi_i),
+                          ci_text(lo_c, hi_c), f"{p_c:.4f}", v_i, v_c, "ya" if changed else "tidak"])
+    lines += ["**b1. Selisih pasangan derived - base (task berkluster)**", ""]
+    lines += md_table(["Derived", "Base", "Task", "n klaster", "Delta", "CI iid", "CI berkelompok", "p berkelompok",
+                       "Status iid", "Status berkelompok", "Berubah"], table) if table \
+        else ["_Dilewati: tidak ada pasangan derived-base berkluster di run ini._"]
+    lines += [f"_Dilewati: {n}_" for n in notes]
+    lines.append("")
+
+    # (b2) best-per-task on clustered tasks, Holm within the task, same logic as section_best.
+    table = []
+    tasks = sorted({t for per_model in run.values() for t in per_model})
+    for task in tasks:
+        have = {m: per_model[task] for m, per_model in run.items() if task in per_model}
+        if len(have) < 2 or not all(s.clusters for s in have.values()):
+            continue
+        best = max(have, key=lambda m: mean_of(have[m]))
+        others = [m for m in sorted(have) if m != best]
+        iid, cl_res, n_cl = {}, {}, {}
+        for m in others:
+            xa, xb, cl = aligned_clustered(have[m], have[best])
+            if xa.size == 0:
+                continue
+            iid[m] = paired_bootstrap_delta(xa, xb, n=N_BOOT, seed=SEED)
+            cl_res[m] = paired_cluster_bootstrap_delta(xa, xb, cl, n_boot=N_BOOT, seed=SEED)
+            n_cl[m] = len(set(cl.tolist()))
+        valid = [m for m in others if m in iid]
+        rej_i = dict(zip(valid, holm([iid[m][3] for m in valid])))
+        rej_c = dict(zip(valid, holm([cl_res[m][3] for m in valid])))
+        for m in valid:
+            d, lo_i, hi_i, p_i = iid[m]
+            _, lo_c, hi_c, p_c = cl_res[m]
+            v_i = "seri dengan terbaik" if not rej_i[m] else "di bawah terbaik"
+            v_c = "seri dengan terbaik" if not rej_c[m] else "di bawah terbaik"
+            changed = v_i != v_c
+            rows.append({"kind": "best", "model": m, "ref": best, "task": task, "n_items": len(have[m].values),
+                         "n_clusters": n_cl[m], "delta": d, "iid_lo": lo_i, "iid_hi": hi_i, "cl_lo": lo_c,
+                         "cl_hi": hi_c, "width_ratio": (hi_c - lo_c) / (hi_i - lo_i), "p_iid": p_i,
+                         "p_cluster": p_c, "verdict_iid": v_i, "verdict_cluster": v_c,
+                         "changed": "ya" if changed else "tidak"})
+            table.append([task, best, m, f"{d:+.3f}", ci_text(lo_i, hi_i), ci_text(lo_c, hi_c), f"{p_c:.4f}",
+                          "ya" if rej_c[m] else "tidak", v_i, v_c, "ya" if changed else "tidak"])
+    lines += ["**b2. Semua model vs terbaik per task (task berkluster, Holm per task)**", ""]
+    lines += md_table(["Task", "Terbaik", "Model", "Delta vs terbaik", "CI iid", "CI berkelompok", "p berkelompok",
+                       "Holm sig. berkelompok", "Status iid", "Status berkelompok", "Berubah"], table) if table \
+        else ["_Dilewati: tidak ada task berkluster dengan minimal dua model._"]
+    return lines
+
+
 def build_markdown(args: argparse.Namespace, run: RunData, cmp_run: RunData | None, models: dict[str, Any],
                    cfg_compare: dict[str, Any], meta: dict[str, dict[str, Any]], rows: list[dict[str, Any]],
-                   notes: list[str], best_rows: list[dict[str, Any]]) -> str:
+                   notes: list[str], best_rows: list[dict[str, Any]], cl_rows: list[dict[str, Any]]) -> str:
     header = [f"# Ringkasan indobench: run `{args.run_id}`", "",
               f"- Metrik: `{args.metric}`", f"- Model di run: {len(run)}",
               f"- Compare run: `{args.compare_run}`" if args.compare_run else "- Compare run: -", ""]
@@ -417,6 +597,7 @@ def build_markdown(args: argparse.Namespace, run: RunData, cmp_run: RunData | No
     add("e. Gap Global-MMLU CS vs CA", section_mmlu_gap(run))
     add("f. Sanity: model >= 20B dekat random", section_sanity(run, models, meta))
     add("i. Semua model vs terbaik per task (paired bootstrap, koreksi Holm per task)", section_best(run, best_rows))
+    add("j. CI berkelompok (cluster bootstrap, task berkluster saja)", section_clustered(run, models, cl_rows))
     if cmp_run is not None:
         add("g. Noise floor antar-run", section_noise(run, cmp_run))
     add("h. Fertilitas tokenizer", section_tokenizer(args.out_dir / "tokenizer_fertility.csv"))
@@ -434,6 +615,8 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--out", dest="out_dir", type=Path, default=Path("results"))
     p.add_argument("--models", type=Path, default=REPO / "configs/models.yaml")
     p.add_argument("--tasks", type=Path, default=REPO / "configs/tasks.yaml")
+    # Muat run dari CSV prediksi (results/predictions/<run-id>) alih-alih samples jsonl di --results.
+    p.add_argument("--predictions", type=Path)
     return p.parse_args(argv)
 
 
@@ -446,7 +629,12 @@ def main(argv: list[str] | None = None) -> int:
     meta: dict[str, dict[str, Any]] = {}
     collect_task_meta(load_yaml(args.tasks, notes), meta)
 
-    run = load_run(args.results, args.run_id, args.metric, notes)
+    if args.predictions is not None:
+        if args.metric != "acc":
+            notes.append(f"`--predictions` hanya membawa metrik acc, `--metric {args.metric}` diabaikan")
+        run = load_predictions(args.predictions, notes)
+    else:
+        run = load_run(args.results, args.run_id, args.metric, notes)
     cmp_run = load_run(args.results, args.compare_run, args.metric, notes) if args.compare_run else None
     for key in run:
         if models and key not in models:
@@ -454,7 +642,8 @@ def main(argv: list[str] | None = None) -> int:
 
     rows: list[dict[str, Any]] = []
     best_rows: list[dict[str, Any]] = []
-    md = build_markdown(args, run, cmp_run, models, cfg_compare, meta, rows, notes, best_rows)
+    cl_rows: list[dict[str, Any]] = []
+    md = build_markdown(args, run, cmp_run, models, cfg_compare, meta, rows, notes, best_rows, cl_rows)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     write_csv(args.out_dir / "summary.csv", rows)
     (args.out_dir / "summary.md").write_text(md + "\n", encoding="utf-8")
@@ -466,6 +655,14 @@ def main(argv: list[str] | None = None) -> int:
             w.writerow({**r, **{k: f"{r[k]:.6f}" for k in ("delta", "ci_lo", "ci_hi", "p")},
                         "holm_significant": str(r["holm_significant"]).lower(),
                         "tied_with_best": str(r["tied_with_best"]).lower()})
+    with (args.out_dir / "clustered.csv").open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=CLUSTERED_FIELDS)
+        w.writeheader()
+        for r in cl_rows:
+            out = dict(r)
+            for k in ("delta", "iid_lo", "iid_hi", "cl_lo", "cl_hi", "width_ratio", "p_iid", "p_cluster"):
+                out[k] = "" if r[k] is None else f"{r[k]:.6f}"
+            w.writerow(out)
     print(f"Ditulis: {args.out_dir / 'summary.csv'} ({len(rows)} baris), {args.out_dir / 'summary.md'}")
     return 0
 

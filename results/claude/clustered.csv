@@ -1,0 +1,21 @@
+kind,model,ref,task,n_items,n_clusters,delta,iid_lo,iid_hi,cl_lo,cl_hi,width_ratio,p_iid,p_cluster,verdict_iid,verdict_cluster,changed
+ci,claude-haiku-5.5,,global_mmlu_full_id_ca_t0,2058,55,0.808552,0.791059,0.825559,0.775339,0.840229,1.880895,,,,,
+ci,claude-haiku-5.5,,global_mmlu_full_id_cs_t0,792,45,0.757576,0.727273,0.786616,0.683205,0.822603,2.349007,,,,,
+ci,claude-haiku-5.5,,indoculture_t0,2429,11,0.761630,0.744751,0.778510,0.728969,0.797494,2.029857,,,,,
+ci,claude-haiku-5.5,,indommlu_t0,14904,25,0.711151,0.704038,0.718398,0.658493,0.753579,6.621485,,,,,
+ci,claude-opus-5.5,,global_mmlu_full_id_ca_t0,2058,55,0.945578,0.935860,0.955296,0.919040,0.966069,2.419643,,,,,
+ci,claude-opus-5.5,,global_mmlu_full_id_cs_t0,792,45,0.939394,0.921717,0.955808,0.912996,0.963576,1.483678,,,,,
+ci,claude-opus-5.5,,indoculture_t0,2429,11,0.932071,0.921779,0.941951,0.910805,0.951299,2.007352,,,,,
+ci,claude-opus-5.5,,indommlu_t0,14904,25,0.856616,0.851045,0.862319,0.837397,0.873846,3.233086,,,,,
+ci,claude-sonnet-5.5,,global_mmlu_full_id_ca_t0,2058,55,0.917396,0.905248,0.929057,0.891328,0.938447,1.978981,,,,,
+ci,claude-sonnet-5.5,,global_mmlu_full_id_cs_t0,792,45,0.881313,0.858586,0.904040,0.834898,0.923581,1.951019,,,,,
+ci,claude-sonnet-5.5,,indoculture_t0,2429,11,0.878551,0.865788,0.891313,0.851300,0.905998,2.142908,,,,,
+ci,claude-sonnet-5.5,,indommlu_t0,14904,25,0.811661,0.805488,0.818035,0.782295,0.837914,4.432823,,,,,
+best,claude-haiku-5.5,claude-opus-5.5,global_mmlu_full_id_ca_t0,2058,55,-0.137026,-0.154033,-0.120991,-0.166825,-0.109616,1.731410,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-sonnet-5.5,claude-opus-5.5,global_mmlu_full_id_ca_t0,2058,55,-0.028183,-0.037901,-0.018465,-0.035632,-0.020523,0.777336,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-haiku-5.5,claude-opus-5.5,global_mmlu_full_id_cs_t0,792,45,-0.181818,-0.210859,-0.152778,-0.239645,-0.129541,1.895706,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-sonnet-5.5,claude-opus-5.5,global_mmlu_full_id_cs_t0,792,45,-0.058081,-0.078283,-0.039141,-0.084488,-0.034303,1.282134,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-haiku-5.5,claude-opus-5.5,indoculture_t0,2429,11,-0.170441,-0.188143,-0.153149,-0.192435,-0.147425,1.286236,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-sonnet-5.5,claude-opus-5.5,indoculture_t0,2429,11,-0.053520,-0.066282,-0.040758,-0.063068,-0.042271,0.814758,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-haiku-5.5,claude-opus-5.5,indommlu_t0,14904,25,-0.145464,-0.152375,-0.138822,-0.189225,-0.112184,5.684254,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
+best,claude-sonnet-5.5,claude-opus-5.5,indommlu_t0,14904,25,-0.044954,-0.049584,-0.040392,-0.061204,-0.031017,3.283983,0.000000,0.000000,di bawah terbaik,di bawah terbaik,tidak
