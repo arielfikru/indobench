@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kirim Soal indobench</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#kirim">Lewati ke formulir</a>
+
+  <header class="site-head">
+    <h1 class="brand">Kirim Soal indobench</h1>
+    <nav class="site-nav" aria-label="Navigasi utama">
+      <a href="#kirim">Kirim soal</a>
+      <a href="#panduan">Panduan menulis</a>
+      <a href="#tentang">Tentang</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="kirim" class="section">
+      <h2>Kirim soal</h2>
+
+      <div id="result" class="notice notice-ok" role="status" tabindex="-1" hidden></div>
+      <div id="summary" class="notice notice-err" role="alert" tabindex="-1" hidden></div>
+
+      <form id="form" novalidate>
+        <fieldset class="card" id="writer">
+          <legend>Data penulis</legend>
+
+          <div class="field">
+            <label for="pseudonim">Pseudonim</label>
+            <div class="inline">
+              <input id="pseudonim" data-field="pseudonim" type="text" autocomplete="off"
+                     maxlength="30" aria-describedby="pseudonim-hint">
+              <button type="button" id="acak" class="btn-secondary">Acak</button>
+            </div>
+            <p id="pseudonim-hint" class="hint">3 sampai 30 karakter: huruf, angka, atau garis bawah. Ini nama samaran, bukan nama asli kamu.</p>
+            <p class="err" data-err="pseudonim" hidden></p>
+          </div>
+
+          <div class="field">
+            <label for="partner">Komunitas atau kampus asal</label>
+            <select id="partner" data-field="partner"></select>
+            <p class="err" data-err="partner" hidden></p>
+          </div>
+
+          <div class="field" id="partner-lain-wrap" hidden>
+            <label for="partner_lain">Nama komunitas atau kampus</label>
+            <input id="partner_lain" data-field="partner_lain" type="text" maxlength="60" autocomplete="off">
+            <p class="err" data-err="partner_lain" hidden></p>
+          </div>
+
+          <div class="field">
+            <label for="email">Email (opsional)</label>
+            <input id="email" data-field="email" type="email" inputmode="email" autocomplete="email" maxlength="120">
+            <p class="hint">Hanya dipakai untuk menghubungi kamu. Disimpan terpisah dari soal dan tidak ditampilkan di data publik.</p>
+            <p class="err" data-err="email" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="card" id="item_type" data-field="item_type">
+          <legend>Jenis soal</legend>
+          <div id="item-type-options"></div>
+          <p class="err" data-err="item_type" hidden></p>
+        </fieldset>
+
+        <div id="item-section">
+
+          <fieldset class="card panel" id="panel-instruksi" data-panel="instruksi">
+            <legend>Soal instruksi</legend>
+
+            <div class="field">
+              <label for="prompt">Permintaan untuk asisten AI</label>
+              <textarea id="prompt" data-field="prompt" rows="5" data-max="1000" aria-describedby="prompt-count"></textarea>
+              <p class="count" id="prompt-count"></p>
+              <p class="hint">Tulis seperti pesan yang akan kamu kirim ke asisten AI. Aturan (constraint) disisipkan secara alami di dalam kalimat.</p>
+              <p class="err" data-err="prompt" hidden></p>
+            </div>
+
+            <fieldset class="field" id="register" data-field="register">
+              <legend>Register</legend>
+              <div id="register-options"></div>
+              <p class="err" data-err="register" hidden></p>
+            </fieldset>
+
+            <div class="field">
+              <label for="topic">Topik</label>
+              <select id="topic" data-field="topic"></select>
+              <p class="err" data-err="topic" hidden></p>
+            </div>
+
+            <fieldset class="field">
+              <legend>Constraint (1 sampai 4)</legend>
+              <div id="constraint-rows"></div>
+              <p class="err" data-err="constraints" hidden></p>
+              <button type="button" id="add-constraint" class="btn-secondary">Tambah constraint</button>
+            </fieldset>
+
+            <div class="field">
+              <label for="reference_response">Jawaban referensi (opsional)</label>
+              <textarea id="reference_response" data-field="reference_response" rows="4" data-max="3000" aria-describedby="reference_response-count"></textarea>
+              <p class="count" id="reference_response-count"></p>
+              <p class="err" data-err="reference_response" hidden></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="card panel" id="panel-pengetahuan" data-panel="pengetahuan" hidden>
+            <legend>Soal pengetahuan</legend>
+
+            <div class="field">
+              <label for="bidang">Bidang</label>
+              <select id="bidang" data-field="bidang"></select>
+              <p class="err" data-err="bidang" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="provinsi">Provinsi atau daerah (opsional)</label>
+              <input id="provinsi" data-field="provinsi" type="text" maxlength="60" autocomplete="off">
+              <p class="err" data-err="provinsi" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="tingkat">Tingkat</label>
+              <select id="tingkat" data-field="tingkat"></select>
+              <p class="err" data-err="tingkat" hidden></p>
+            </div>
+
+            <fieldset class="field" id="format" data-field="format">
+              <legend>Format soal</legend>
+              <div id="format-options"></div>
+              <p class="err" data-err="format" hidden></p>
+            </fieldset>
+
+            <div class="field">
+              <label for="pertanyaan">Pertanyaan</label>
+              <textarea id="pertanyaan" data-field="pertanyaan" rows="4" data-max="500" aria-describedby="pertanyaan-count"></textarea>
+              <p class="count" id="pertanyaan-count"></p>
+              <p class="err" data-err="pertanyaan" hidden></p>
+            </div>
+
+            <div id="block-pilihan_ganda" hidden>
+              <fieldset class="field">
+                <legend>Pilihan jawaban (3 sampai 5)</legend>
+                <div id="opsi-list"></div>
+                <p class="err" data-err="opsi" hidden></p>
+                <div class="inline">
+                  <button type="button" id="add-opsi" class="btn-secondary">Tambah pilihan</button>
+                  <button type="button" id="remove-opsi" class="btn-secondary">Hapus pilihan terakhir</button>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label for="kunci">Kunci jawaban yang benar</label>
+                <select id="kunci" data-field="kunci"></select>
+                <p class="err" data-err="kunci" hidden></p>
+              </div>
+            </div>
+
+            <div id="block-jawaban_singkat" hidden>
+              <div class="field">
+                <label for="kunci_jawaban">Kunci jawaban</label>
+                <input id="kunci_jawaban" data-field="kunci_jawaban" type="text" maxlength="200" autocomplete="off">
+                <p class="err" data-err="kunci_jawaban" hidden></p>
+              </div>
+              <div class="field">
+                <label for="varian">Varian jawaban yang diterima (opsional)</label>
+                <textarea id="varian" data-field="varian" rows="3"></textarea>
+                <p class="hint">Satu varian per baris. Maksimal 10 baris.</p>
+                <p class="err" data-err="varian" hidden></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="sumber">Sumber yang bisa dicek</label>
+              <input id="sumber" data-field="sumber" type="text" maxlength="300" autocomplete="off">
+              <p class="hint">Tulis buku, artikel, atau situs tempat reviewer bisa memeriksa fakta ini.</p>
+              <p class="err" data-err="sumber" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="penjelasan">Penjelasan singkat (opsional)</label>
+              <textarea id="penjelasan" data-field="penjelasan" rows="3" data-max="1000" aria-describedby="penjelasan-count"></textarea>
+              <p class="count" id="penjelasan-count"></p>
+              <p class="err" data-err="penjelasan" hidden></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="card panel" id="panel-sastra" data-panel="sastra" hidden>
+            <legend>Soal sastra</legend>
+
+            <div class="field">
+              <label for="jenis">Jenis karya</label>
+              <select id="jenis" data-field="jenis"></select>
+              <p class="err" data-err="jenis" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="tugas">Tugas untuk model</label>
+              <textarea id="tugas" data-field="tugas" rows="5" data-max="1500" aria-describedby="tugas-count"></textarea>
+              <p class="count" id="tugas-count"></p>
+              <p class="hint">Tulis apa yang harus dibuat model, misalnya tema dan suasananya.</p>
+              <p class="err" data-err="tugas" hidden></p>
+            </div>
+
+            <fieldset class="field">
+              <legend>Aturan yang bisa dicek (opsional)</legend>
+              <p class="hint">Isi hanya kalau memang diminta dalam tugas. Kosongkan kalau tidak.</p>
+
+              <div class="field">
+                <label for="jumlah_bait">Jumlah bait</label>
+                <input id="jumlah_bait" data-field="jumlah_bait" type="number" inputmode="numeric" min="1" max="20">
+                <p class="err" data-err="jumlah_bait" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="baris_per_bait">Baris per bait</label>
+                <input id="baris_per_bait" data-field="baris_per_bait" type="number" inputmode="numeric" min="1" max="20">
+                <p class="err" data-err="baris_per_bait" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="pola_rima">Pola rima</label>
+                <input id="pola_rima" data-field="pola_rima" type="text" maxlength="40" autocomplete="off">
+                <p class="hint">Contoh penulisan: a-b-a-b</p>
+                <p class="err" data-err="pola_rima" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="suku_kata_min">Suku kata per baris, minimal</label>
+                <input id="suku_kata_min" data-field="suku_kata_min" type="number" inputmode="numeric" min="1" max="30">
+                <p class="err" data-err="suku_kata_min" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="suku_kata_max">Suku kata per baris, maksimal</label>
+                <input id="suku_kata_max" data-field="suku_kata_max" type="number" inputmode="numeric" min="1" max="30">
+                <p class="err" data-err="suku_kata_max" hidden></p>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label for="kriteria_penilaian">Kriteria penilaian</label>
+              <textarea id="kriteria_penilaian" data-field="kriteria_penilaian" rows="4" data-max="600" aria-describedby="kriteria_penilaian-count"></textarea>
+              <p class="count" id="kriteria_penilaian-count"></p>
+              <p class="hint">Tulis apa yang harus ada di jawaban yang bagus. Reviewer manusia memakai ini untuk menilai.</p>
+              <p class="err" data-err="kriteria_penilaian" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="contoh_jawaban">Contoh jawaban (opsional)</label>
+              <textarea id="contoh_jawaban" data-field="contoh_jawaban" rows="4" data-max="3000" aria-describedby="contoh_jawaban-count"></textarea>
+              <p class="count" id="contoh_jawaban-count"></p>
+              <p class="hint">Hanya karya kamu sendiri atau karya domain publik yang sumbernya kamu tulis.</p>
+              <p class="err" data-err="contoh_jawaban" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="sumber_contoh">Sumber contoh jawaban</label>
+              <input id="sumber_contoh" data-field="sumber_contoh" type="text" maxlength="300" autocomplete="off">
+              <p class="hint">Isi "karya saya sendiri" atau sebutkan sumber domain publiknya.</p>
+              <p class="err" data-err="sumber_contoh" hidden></p>
+            </div>
+          </fieldset>
+        </div>
+
+        <fieldset class="card" id="consent">
+          <legend>Persetujuan (wajib semua)</legend>
+          <div class="check-row">
+            <input type="checkbox" id="consent_tanpa_ai" data-field="consent_tanpa_ai">
+            <label for="consent_tanpa_ai">Saya menulis soal ini sendiri tanpa bantuan AI.</label>
+          </div>
+          <p class="err" data-err="consent_tanpa_ai" hidden></p>
+
+          <div class="check-row">
+            <input type="checkbox" id="consent_data_pribadi" data-field="consent_data_pribadi">
+            <label for="consent_data_pribadi">Soal ini tidak berisi data pribadi asli: nama orang nyata yang bukan tokoh publik, nomor HP, alamat, atau NIK.</label>
+          </div>
+          <p class="err" data-err="consent_data_pribadi" hidden></p>
+
+          <div class="check-row">
+            <input type="checkbox" id="consent_sara_medis_hukum" data-field="consent_sara_medis_hukum">
+            <label for="consent_sara_medis_hukum">Soal ini tidak menyinggung SARA dan tidak berisi saran medis atau hukum yang spesifik.</label>
+          </div>
+          <p class="err" data-err="consent_sara_medis_hukum" hidden></p>
+
+          <div class="check-row">
+            <input type="checkbox" id="consent_bukan_salinan" data-field="consent_bukan_salinan">
+            <label for="consent_bukan_salinan">Saya tidak menyalin karya orang lain. Kalau memakai karya domain publik, sumbernya saya cantumkan.</label>
+          </div>
+          <p class="err" data-err="consent_bukan_salinan" hidden></p>
+
+          <div class="check-row">
+            <input type="checkbox" id="consent_lisensi_cc_by" data-field="consent_lisensi_cc_by">
+            <label for="consent_lisensi_cc_by">Saya setuju soal ini dilisensikan CC BY 4.0 dan boleh disimpan sebagai data privat yang tidak dipublikasikan.</label>
+          </div>
+          <p class="err" data-err="consent_lisensi_cc_by" hidden></p>
+        </fieldset>
+
+        <div class="hp" aria-hidden="true">
+          <label for="website">Kosongkan kolom ini</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submit" class="btn-primary">Kirim soal</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="panduan" class="section">
+      <h2>Panduan menulis</h2>
+
+      <h3>Untuk semua jenis</h3>
+      <ul class="list">
+        <li>Tulis sendiri. Jangan pakai AI untuk menulis atau mengedit soal.</li>
+        <li>Jangan pakai data pribadi asli: nama orang nyata yang bukan tokoh publik, nomor HP, alamat, atau NIK.</li>
+        <li>Hindari SARA, serta saran medis atau hukum yang spesifik.</li>
+        <li>Pakai pseudonim, bukan nama asli.</li>
+        <li>Kalau mengutip fakta, tulis sumbernya. Karya sastra harus karya kamu sendiri atau domain publik.</li>
+      </ul>
+
+      <h3>Instruksi (IFEval-ID)</h3>
+      <ul class="list">
+        <li>Tulis permintaan yang realistis, seperti pesan yang akan kamu kirim ke asisten AI.</li>
+        <li>Pilih satu register: baku, santai, gaul, atau campur kode.</li>
+        <li>Pilih topik yang ada di formulir. Hindari SARA dan saran medis atau hukum yang spesifik.</li>
+        <li>Sisipkan 1 sampai 4 constraint secara alami. Setiap constraint harus bisa dipenuhi oleh jawaban yang benar.</li>
+        <li>Jangan memasang constraint yang saling bertentangan, misalnya bahasa baku sekaligus bahasa gaul.</li>
+      </ul>
+      <p class="example-label">Contoh dari spesifikasi:</p>
+      <blockquote class="example">Bikinin caption IG buat promo kopi susu gula aren harga 18 ribu. Pakai bahasa gaul, maksimal 40 kata, tulis harganya pakai format Rupiah yang bener, jangan ada kata bahasa Inggris</blockquote>
+
+      <h3>Pengetahuan</h3>
+      <ul class="list">
+        <li>Pertanyaan harus punya jawaban yang jelas dan bisa dicek. Tulis sumbernya.</li>
+        <li>Pilihan ganda: 3 sampai 5 pilihan, hanya satu yang benar, dan pengecohnya masuk akal.</li>
+        <li>Isian singkat: jawabannya pendek dan tidak ambigu. Tulis varian yang juga diterima.</li>
+        <li>Pilih tingkat sesuai pembaca, dari SD sampai ahli.</li>
+      </ul>
+
+      <h3>Sastra</h3>
+      <ul class="list">
+        <li>Pilih jenis karya: pantun, syair, gurindam, puisi bebas, cerpen mini, atau analisis karya.</li>
+        <li>Tugas harus jelas: apa yang diminta dari model.</li>
+        <li>Isi aturan yang bisa dicek (jumlah bait, baris per bait, rima, suku kata) hanya kalau memang diminta.</li>
+        <li>Kriteria penilaian menjelaskan apa yang membuat jawaban bagus. Reviewer memakai ini.</li>
+        <li>Contoh jawaban wajib karya kamu sendiri atau domain publik dengan sumber.</li>
+      </ul>
+
+      <h3>Daftar 25 jenis constraint</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Kategori</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Kode</th>
+              <th scope="col">Contoh frasa</th>
+            </tr>
+          </thead>
+          <tbody id="constraint-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tentang" class="section">
+      <h2>Tentang</h2>
+      <p>indobench adalah benchmark kemampuan bahasa Indonesia. Proyek ini terbuka di <a href="https://github.com/arielfikru/indobench" rel="noopener" target="_blank">github.com/arielfikru/indobench</a>.</p>
+      <p>Setiap soal diperiksa oleh dua reviewer sebelum dipakai.</p>
+      <p>Soal dilisensikan CC BY 4.0. Sebagian soal disimpan privat supaya tidak bocor ke data latih model, jadi tidak semua soal yang kamu kirim akan tampil publik.</p>
+      <p>Email kamu hanya dipakai untuk menghubungi penulis. Email disimpan terpisah dari isi soal dan tidak dipublikasikan.</p>
+    </section>
+  </main>
+</body>
+</html>

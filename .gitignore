@@ -6,3 +6,4 @@ results/runs/
 .DS_Store
 *.tmp
 .claude/
+submit/_local/
