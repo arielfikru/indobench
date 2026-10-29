@@ -1,0 +1,9 @@
+# Template t0: question, options A-E as given in the dataset, answer prefix.
+include: _default_template_yaml
+task: indommlu_t0
+doc_to_text: "{{soal.strip()}}\n{{jawaban.strip()}}\nJawab hanya dengan huruf pilihan yang paling tepat."
+# Answer prefix inside the assistant turn; see tasks/global_mmlu_full_id_cs_ca/_default_template_yaml.
+gen_prefix: "Jawaban:"
+metadata:
+  version: 0.0
+  template: t0

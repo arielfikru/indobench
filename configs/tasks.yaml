@@ -1,0 +1,73 @@
+# Benchmark task registry (indobench). Counts and baselines measured 2026-10-28 with lm_eval 0.4.13 (dummy-model full runs).
+# include_path: "tasks" loads the custom YAMLs under ./tasks (no fork of lm_eval); null = built-in lm_eval tasks only.
+# Scoring: zero-shot, output_type multiple_choice (loglikelihood over option letters or option text).
+
+smoke_limit: 50
+num_fewshot: 0
+lm_eval_version: 0.4.13
+
+benchmarks:
+  - key: copal_id
+    lm_eval_tasks: [copal_id_standard_t0, copal_id_colloquial_t0]
+    include_path: tasks
+    kind: mcq
+    n_options: 2
+    random_baseline: 0.5
+    num_fewshot: 0
+    metrics: [acc]
+    reported_subsets: [copal_id_standard_t0, copal_id_colloquial_t0]
+    items: {copal_id_standard_t0: 559, copal_id_colloquial_t0: 559}
+    notes: >
+      Custom lettered-MCQ version (tasks/copal_id) of haryoaw/COPAL config id, splits test / test_colloquial.
+      Replaces the built-in lm_eval copal_id (used in run full-m4), whose prompt cut the last character of
+      78.9% of colloquial premises and scored free-text endings by summed log-likelihood.
+
+  - key: indommlu
+    lm_eval_tasks: [indommlu_t0]
+    include_path: tasks
+    kind: mcq
+    n_options: "3-5 (3: 1249, 4: 6986, 5: 6669)"
+    random_baseline: 0.2346        # mean of 1/n over the 14904 evaluable test items
+    num_fewshot: 0
+    metrics: [acc, acc_norm]       # acc_norm == acc for letter-only choices (see NOTES_tasks.md)
+    reported_subsets: [subject, level, subject_group]   # derivable from the sample logs; not separate tasks
+    items: {indommlu_t0: 14904}
+    notes: >
+      Custom (tasks/indommlu). Source: indolem/IndoMMLU IndoMMLU.csv, read as CSV because the repo ships a .py
+      loading script that datasets 5.x refuses to run. Test = is_for_fewshot == 0 (14906 rows); 2 rows with a gold
+      letter missing from their options (ids 4223, 14150) are dropped, leaving 14904. Built-in lm_eval has no IndoMMLU.
+
+  - key: indoculture
+    lm_eval_tasks: [indoculture_t0]
+    include_path: tasks
+    kind: mcq
+    n_options: 3
+    random_baseline: 0.3333
+    num_fewshot: 0
+    metrics: [acc, acc_norm]
+    reported_subsets: [is_province_specific True/False, topic]   # derivable from the sample logs
+    items: {indoculture_t0: 2429}
+    notes: >
+      Custom (tasks/indoculture). Source: indolem/IndoCulture test.csv (no loader script; pinned CSV URL).
+      The dataset has only a single test split and no question field: prompt = context sentence + options A-C + "Jawaban:".
+      Dataset card is empty, so this MCQ format is inferred from the CSV, not from documentation.
+      Built-in lm_eval has no IndoCulture.
+
+  - key: global_mmlu_id
+    # Phase 0 runs only the 2850 annotated items (CS + CA) to save GPU time; add global_mmlu_full_id
+    # (14042 items, English template) here for the full score.
+    lm_eval_tasks: [global_mmlu_full_id_cs_t0, global_mmlu_full_id_ca_t0]
+    include_path: tasks
+    kind: mcq
+    n_options: 4
+    random_baseline: 0.25
+    num_fewshot: 0
+    metrics: [acc, acc_norm]
+    reported_subsets: [CS, CA]
+    items: {global_mmlu_full_id: 14042, global_mmlu_full_id_cs_t0: 792, global_mmlu_full_id_ca_t0: 2058}
+    notes: >
+      Full Global-MMLU id config (CohereLabs/Global-MMLU, test split, 14042 rows) = built-in global_mmlu_full_id (English
+      "Answer:" template). CS/CA are custom (tasks/global_mmlu_full_id_cs_ca), filtered on cultural_sensitivity_label; only
+      2850 rows are labelled (792 CS, 2058 CA), the other 11192 are "-" and are in neither subset. CS/CA use the Indonesian
+      "Jawaban:" template, so they are not an exact slice of the built-in full task. Built-in global_mmlu_id is the LITE
+      set (400 items, CS 200 / CA 200 balanced, no CS/CA task in lm_eval) and is not used here.

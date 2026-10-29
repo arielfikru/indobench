@@ -1,0 +1,19 @@
+# COPAL-ID (haryoaw/COPAL, config id) as a lettered MCQ, same format as the other indobench tasks.
+# Replaces lm_eval's copal_id continuation format, which (a) cuts the last character of every premise
+# (`premise.strip()[:-1]` assumes a trailing period; 78.9% of colloquial premises have none, so
+# "naek angkot" became "naek angko") and (b) compares summed log-likelihoods of free-text endings,
+# which favours the shorter choice. Diagnosis: analysis/copal_check.py (2026-10-29).
+dataset_path: haryoaw/COPAL
+dataset_name: id
+output_type: multiple_choice
+doc_to_text: !function utils.doc_to_text
+gen_prefix: "Jawaban:"
+doc_to_target: label
+doc_to_choice: ["A", "B"]
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.0
+  template: t0

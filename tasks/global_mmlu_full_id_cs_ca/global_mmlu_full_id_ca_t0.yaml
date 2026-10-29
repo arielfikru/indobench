@@ -1,0 +1,7 @@
+include: _default_template_yaml
+task: global_mmlu_full_id_ca_t0
+process_docs: !function utils.process_ca
+metadata:
+  version: 0.0
+  template: t0
+  subset: CA

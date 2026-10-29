@@ -1,0 +1,20 @@
+# Shared settings for IndoCulture (indolem/IndoCulture, test.csv only, 2429 items, 3 options).
+# The README is empty; the MCQ format (context + 3 lettered options, answer letter) is taken from the CSV.
+dataset_path: csv
+dataset_kwargs:
+  data_files:
+    test: https://huggingface.co/datasets/indolem/IndoCulture/resolve/d5f33af62c9b6e808ee11b75c13f042c3e5c7690/test.csv
+test_split: test
+process_docs: !function utils.process_docs
+output_type: multiple_choice
+doc_to_target: answer
+doc_to_choice: choices_letters
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.0

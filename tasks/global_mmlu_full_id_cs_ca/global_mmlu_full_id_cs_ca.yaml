@@ -1,0 +1,9 @@
+group: global_mmlu_full_id_cs_ca
+task:
+  - global_mmlu_full_id_cs_t0
+  - global_mmlu_full_id_ca_t0
+aggregate_metric_list:
+  - metric: acc
+    weight_by_size: true
+metadata:
+  version: 0.0

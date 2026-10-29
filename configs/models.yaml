@@ -1,0 +1,156 @@
+# Model matrix for indobench phase 0.
+# revision = HF commit SHA, verified 2026-10-28 (huggingface_hub model_info).
+# All models run BF16, text-only (vision/audio encoders disabled), non-thinking.
+# bf16_gb = params x 2 bytes (weights only, excludes KV cache).
+
+defaults:
+  dtype: bfloat16
+  max_model_len: 8192          # zero-shot MCQ prompts are short; keeps KV cache small
+  gpu_memory_utilization: 0.90
+  vllm_args:
+    # Qwen3.5-arch models are hybrid (Mamba layers): one Mamba cache block per sequence,
+    # and vllm's default 1024 exceeded the 637 blocks available on a 96 GB card (2026-10-28).
+    max_num_seqs: 256
+  thinking: off                # recorded in manifest
+  # Passed as top-level lm_eval vllm model_args (lm_eval 0.4.13 vllm_causallms.py:85);
+  # only takes effect with --apply_chat_template. Don't use chat_template_args (overwritten in 0.4.13).
+  thinking_args:
+    enable_thinking: false
+  text_only: true              # multimodal models: no image/audio inputs
+  text_only_args:
+    language_model_only: true  # vllm 0.32 skips vision/audio towers (vllm/config/multimodal.py:304)
+  # Strings removed from generations before scoring (spec IFEval-ID-Gaul §3).
+  strip_markers: ["<think>", "</think>"]
+
+models:
+  # --- Pair A: Gemma 3 27B vs GoTo CPT (generasi lama + turunan regional) ---
+  gemma3-27b-it:
+    repo: google/gemma-3-27b-it
+    revision: 005ad3404e59d6023443cb575daa05336842228a
+    family: gemma3
+    params_b: 27.4
+    bf16_gb: 54.9
+    gated: manual              # license must be accepted on HF before first run
+    chat_template_notes: "Gemma 3 template, no thinking mode; enable_thinking kwarg is ignored."
+    thinking: none
+    thinking_args: {}
+
+  gotoai-gemma3-27b-it:
+    repo: GoToCompany/gemma3-27b-cpt-gotoai-v3-instruct
+    revision: db3fb073bd44bf9554cbe6d9b94e54024cafcc37
+    family: gemma3
+    params_b: 27.43
+    bf16_gb: 54.9
+    pair: {role: derived, base: gemma3-27b-it, group: gemma3-goto}
+    chat_template_notes: "Gemma 3 template (no thinking). Card does not declare base_model; pairing with gemma-3-27b-it is an assumption. Repo created 2025-12-03, last updated 2026-10-19."
+    thinking: none
+    thinking_args: {}
+
+  # --- Pair B: Qwen3.6 27B vs Qwen-SEA-LION v4.5 27B ---
+  qwen3.6-27b:
+    repo: Qwen/Qwen3.6-27B
+    revision: 6a9e13bd6fc8f0983b9b99948120bc37f49c13e9
+    family: qwen3_5
+    params_b: 27.78
+    bf16_gb: 55.6
+    chat_template_notes: "Hybrid thinking template; enable_thinking=false gives an empty <think></think> block."
+
+  qwen-sea-lion-v4.5-27b-it:
+    repo: aisingapore/Qwen-SEA-LION-v4.5-27B-IT
+    revision: 544e416f68a5700c7577547ad48e351e7d294116
+    family: qwen3_5
+    params_b: 27.78
+    bf16_gb: 55.6
+    pair: {role: derived, base: qwen3.6-27b, group: qwen36-sealion}
+    chat_template_notes: "Qwen3.x hybrid thinking template; base lineage (Qwen3.6-27B) taken from model card text, not base_model metadata."
+
+  # --- Pair C: Gemma 4 E2B vs Gemma-SEA-LION v4.5 E2B (smoke-test pair) ---
+  gemma4-e2b-it:
+    repo: google/gemma-4-E2B-it
+    revision: 3e22461f65e89153144f8adb70e3b8c2cc9845a7
+    family: gemma4
+    params_b: 5.12
+    bf16_gb: 10.3
+    smoke: true
+    chat_template_notes: "Gemma 4 template with thinking toggle; vision + audio encoders disabled."
+
+  gemma-sea-lion-v4.5-e2b-it:
+    repo: aisingapore/Gemma-SEA-LION-v4.5-E2B-IT
+    revision: c028f609f6f84dd0e9b669dad9dc1f9fd61b8bed
+    family: gemma4
+    params_b: 5.12
+    bf16_gb: 10.3
+    smoke: true
+    pair: {role: derived, base: gemma4-e2b-it, group: gemma4e2b-sealion}
+    chat_template_notes: "base_model metadata = google/gemma-4-E2B-it."
+
+  # --- Latest-generation comparators (no regional derivative yet) ---
+  qwen3.8-27b:
+    repo: Qwen/Qwen3.8-27B
+    revision: 1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0
+    family: qwen3_5
+    params_b: 27.78
+    bf16_gb: 55.6
+    comparator: true
+    chat_template_notes: "Qwen3.x hybrid thinking template."
+
+  gemma4-31b-it:
+    repo: google/gemma-4-31B-it
+    revision: 842da3794eaa0b77d5f08bae87a17459d91ff475
+    family: gemma4
+    params_b: 31.27
+    bf16_gb: 62.6
+    comparator: true
+    chat_template_notes: "Gemma 4 dense; largest model in the matrix (62.6 GB weights)."
+
+  gemma4-26b-a4b-it:
+    repo: google/gemma-4-26B-A4B-it
+    revision: 4d7ae4984b7db7de8f8457170b3f1a419ee76d52
+    family: gemma4
+    params_b: 25.81
+    bf16_gb: 51.6
+    comparator: true
+    chat_template_notes: "Gemma 4 MoE (128 experts, ~4B active)."
+
+  # --- Small tier (7-13B): latest default vs GoTo regional (user, 2026-10-28) ---
+  gemma4-12b-it:
+    repo: google/gemma-4-12B-it
+    revision: 707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7
+    family: gemma4_unified
+    params_b: 11.96
+    bf16_gb: 23.9
+    comparator: true
+    chat_template_notes: "Gemma 4 12B (Gemma4UnifiedForConditionalGeneration, released 2026-05-23)."
+
+  gemma2-9b-it:
+    repo: google/gemma-2-9b-it
+    revision: 11c9b309abf73637e4b6f9a3fa1e92e615547819
+    family: gemma2
+    params_b: 9.24
+    bf16_gb: 18.5
+    gated: manual              # Gemma license must be accepted on HF (403 on 2026-10-29)
+    chat_template_notes: "Gemma 2 template, no thinking mode, text-only."
+    text_only: false
+    thinking: none
+    thinking_args: {}
+
+  sahabatai-gemma2-9b-it:
+    repo: GoToCompany/gemma2-9b-cpt-sahabatai-v1-instruct
+    revision: ca19cec82a7d2bdba20020e1bebf296417cfc3ee
+    family: gemma2
+    params_b: 9.24
+    bf16_gb: 18.5
+    pair: {role: derived, base: gemma2-9b-it, group: gemma2-sahabat}
+    chat_template_notes: "GoTo Sahabat-AI v1 (Gemma 2 9B CPT, 2024-11; base_model = sahabatai-v1-base, itself a CPT of gemma-2-9b). Text-only, no thinking mode."
+    text_only: false
+    thinking: none
+    thinking_args: {}
+
+# Questions the matrix answers (used by analysis/summarize.py).
+comparisons:
+  # Q1: regional derivative of an older base vs latest general models
+  regional_vs_latest:
+    regional: [gotoai-gemma3-27b-it, qwen-sea-lion-v4.5-27b-it, sahabatai-gemma2-9b-it]
+    latest: [qwen3.8-27b, gemma4-31b-it, gemma4-26b-a4b-it, gemma4-12b-it]
+  # Q2: effect of regional continued pretraining = derived - base (paired bootstrap)
+  # derived from the `pair` fields above.

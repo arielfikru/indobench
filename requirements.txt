@@ -1,0 +1,13 @@
+# indobench VM requirements (Colab G4 = NVIDIA RTX PRO 6000 Blackwell, sm_120; A100 80GB fallback).
+# Install: uv pip install -r requirements.txt
+#
+# torch is deliberately NOT listed. vllm==0.32.0 pins its own torch (torch==2.13.0, torchvision==0.28.0,
+# torchaudio==2.11.0; vllm requirements/cuda.txt) and its PyPI wheel is built for CUDA 13.0.
+# Colab's preinstalled torch must be replaced by that pin: a separately installed torch breaks vllm's compiled kernels.
+# Driver must support CUDA 13.0 for the default PyPI wheel (check nvidia-smi on the VM).
+vllm==0.32.0
+lm_eval[vllm]==0.4.13
+datasets==5.1.0
+pyyaml==6.0.3
+huggingface_hub==2.3.0
+hf_transfer==0.1.9

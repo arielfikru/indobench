@@ -1,0 +1,11 @@
+# Template t0: location, context sentence, instruction, options A-C, answer prefix.
+# The location is part of the task (IndoCulture asks what fits in a given province); without it
+# province-specific items are underspecified.
+include: _default_template_yaml
+task: indoculture_t0
+doc_to_text: "Lokasi: {{province}}, Indonesia.\n{{context.strip()}}\nPilihan yang paling tepat untuk melanjutkan kalimat di atas:\n{{options_text}}\nJawab hanya dengan huruf pilihan yang paling tepat."
+# Answer prefix inside the assistant turn; see tasks/global_mmlu_full_id_cs_ca/_default_template_yaml.
+gen_prefix: "Jawaban:"
+metadata:
+  version: 0.0
+  template: t0

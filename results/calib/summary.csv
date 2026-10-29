@@ -1,0 +1,7 @@
+model,task,score,stderr,ci_lo,ci_hi,n,random_baseline,above_random
+qwen3.8-27b,copal_id_colloquial,0.540000,0.071200,0.400000,0.680000,50,0.500000,false
+qwen3.8-27b,copal_id_standard,0.800000,0.057143,0.680000,0.900000,50,0.500000,true
+qwen3.8-27b,global_mmlu_full_id_ca_t0,0.620000,0.069341,0.480000,0.740000,50,0.250000,true
+qwen3.8-27b,global_mmlu_full_id_cs_t0,0.660000,0.067673,0.520000,0.780000,50,0.250000,true
+qwen3.8-27b,indoculture_t0,0.760000,0.061012,0.640000,0.880000,50,0.333333,true
+qwen3.8-27b,indommlu_t0,0.860000,0.049570,0.760000,0.940000,50,0.200000,true

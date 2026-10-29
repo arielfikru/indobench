@@ -1,0 +1,8 @@
+group: indommlu
+task:
+  - indommlu_t0
+aggregate_metric_list:
+  - metric: acc
+    weight_by_size: true
+metadata:
+  version: 0.0

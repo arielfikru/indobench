@@ -1,0 +1,22 @@
+# Global-MMLU (CohereLabs/Global-MMLU, config id, test split = 14042 rows).
+# Only 2850 rows carry a CS/CA label (792 CS, 2058 CA); the other 11192 have label "-" and are excluded by both subsets.
+dataset_path: CohereLabs/Global-MMLU
+dataset_name: id
+test_split: test
+output_type: multiple_choice
+doc_to_text: "{{question.strip()}}\nA. {{option_a}}\nB. {{option_b}}\nC. {{option_c}}\nD. {{option_d}}\nJawab hanya dengan huruf pilihan yang paling tepat."
+# "Jawaban:" opens the assistant turn so the next token is the answer letter. Without it, the letter
+# right after the chat template was scored as the first token of a free answer (27B model picked "B" on
+# 50/50 IndoCulture items, 2026-10-28).
+gen_prefix: "Jawaban:"
+doc_to_target: answer
+doc_to_choice: ["A", "B", "C", "D"]
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.0

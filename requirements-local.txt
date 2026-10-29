@@ -1,0 +1,10 @@
+# Local Mac venv (.venv-local): task-YAML validation with --model dummy, dataset and tokenizer checks.
+# No vllm and no torch on purpose; GPU runs happen on the Colab VM via requirements.txt.
+lm_eval==0.4.13
+transformers==5.19.0
+tokenizers==0.23.3
+datasets==5.1.0
+pyyaml==6.0.3
+numpy==2.5.4
+pandas==3.1.0
+huggingface_hub==2.3.0

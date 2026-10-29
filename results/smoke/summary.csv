@@ -1,0 +1,13 @@
+model,task,score,stderr,ci_lo,ci_hi,n,random_baseline,above_random
+gemma-sea-lion-v4.5-e2b-it,copal_id_colloquial,0.560000,0.070912,0.420000,0.700000,50,0.500000,false
+gemma-sea-lion-v4.5-e2b-it,copal_id_standard,0.620000,0.069341,0.480000,0.740000,50,0.500000,false
+gemma-sea-lion-v4.5-e2b-it,global_mmlu_full_id_ca_t0,0.200000,0.057143,0.100000,0.320000,50,0.250000,false
+gemma-sea-lion-v4.5-e2b-it,global_mmlu_full_id_cs_t0,0.360000,0.068571,0.220000,0.500000,50,0.250000,false
+gemma-sea-lion-v4.5-e2b-it,indoculture_t0,0.280000,0.064143,0.160000,0.400000,50,0.333333,false
+gemma-sea-lion-v4.5-e2b-it,indommlu_t0,0.440000,0.070912,0.300000,0.580000,50,0.200000,true
+gemma4-e2b-it,copal_id_colloquial,0.540000,0.071200,0.400000,0.680000,50,0.500000,false
+gemma4-e2b-it,copal_id_standard,0.640000,0.068571,0.500000,0.760000,50,0.500000,false
+gemma4-e2b-it,global_mmlu_full_id_ca_t0,0.200000,0.057143,0.100000,0.320000,50,0.250000,false
+gemma4-e2b-it,global_mmlu_full_id_cs_t0,0.360000,0.068571,0.220000,0.500000,50,0.250000,false
+gemma4-e2b-it,indoculture_t0,0.280000,0.064143,0.160000,0.400000,50,0.333333,false
+gemma4-e2b-it,indommlu_t0,0.440000,0.070912,0.300000,0.580000,50,0.200000,true

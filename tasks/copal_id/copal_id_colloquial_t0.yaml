@@ -1,0 +1,3 @@
+include: _default_template_yaml
+task: copal_id_colloquial_t0
+test_split: test_colloquial

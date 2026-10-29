@@ -1,0 +1,21 @@
+# Shared settings for IndoMMLU (indolem/IndoMMLU). Per-variant prompts live in <name>_t<k>.yaml.
+# indolem/IndoMMLU ships a .py loading script that datasets>=4 refuses to run,
+# so the raw CSV is read directly (pinned to the HF commit below).
+dataset_path: csv
+dataset_kwargs:
+  data_files:
+    test: https://huggingface.co/datasets/indolem/IndoMMLU/resolve/df6d6d348d7f8a0b1c98b56f4443977b60fae0f5/IndoMMLU.csv
+test_split: test
+process_docs: !function utils.process_docs
+output_type: multiple_choice
+doc_to_target: kunci
+doc_to_choice: choices_letters
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.0
