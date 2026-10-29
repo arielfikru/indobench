@@ -39,10 +39,27 @@ What the numbers support:
 - **Colloquial penalty on COPAL-ID:** 1.6 to 4.7 points. Significant for the four 27B/12B models, not for the two Gemma 2 9B models, whose standard-register scores are lower to begin with.
 - **Harness bug:** lm_eval's built-in `copal_id` task cuts the last character of 79% of colloquial premises; we use a fixed lettered-MCQ version (`tasks/copal_id`). Details in `NOTES_tasks.md`.
 
+## Closed models for reference (generative)
+
+Claude models over the Anthropic Message Batches API, same prompts (`runner/run_anthropic.py`). The model writes an answer and the letter is extracted with a regex; an answer with no letter counts as wrong (Haiku 1.7%, Sonnet 0.8%, Opus 0.1% of items, mostly IndoMMLU questions that refer to a missing picture or passage). Thinking off for Haiku and Sonnet; Opus 5.5 cannot turn thinking off and runs at effort `low`. Because the scoring differs from the loglikelihood runs above, read these as a reference point, not a like-for-like ranking. Details: [`results/claude/summary.md`](results/claude/summary.md).
+
+| Task | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Qwen3.8 27B (best open) |
+|---|---|---|---|---|
+| IndoMMLU | 71.1 ± 0.7 | 81.2 ± 0.6 | **85.7** ± 0.6 | 71.4 |
+| Global-MMLU ID, culturally agnostic | 80.9 ± 1.7 | 91.7 ± 1.2 | **94.6** ± 1.0 | 79.3 |
+| Global-MMLU ID, culturally sensitive | 75.8 ± 3.0 | 88.1 ± 2.3 | **93.9** ± 1.7 | 77.1 |
+| IndoCulture | 76.2 ± 1.7 | 87.9 ± 1.3 | **93.2** ± 1.0 | 74.1 |
+| COPAL-ID standard | 84.6 ± 3.0 | 94.6 ± 1.9 | **97.0** ± 1.4 | 86.4 |
+| COPAL-ID colloquial | 80.9 ± 3.2 | 91.1 ± 2.4 | **97.3** ± 1.3 | 82.3 |
+| Cost for all 21,301 items (batch price) | $0.31 | $7.43 | $21.70 | |
+
+- Opus 5.5 shows no colloquial penalty on COPAL-ID (97.0 vs 97.3); Haiku and Sonnet drop about 3.5 points, like the open models.
+- On IndoCulture the gap between the best closed and best open model (19 points) is far larger than any regional-vs-general gap among open models.
+
 ## Limitations
 
 - **Contamination is not tested.** All four datasets were public (2023-2024) before these models were trained, and some model cards report IndoMMLU. Scores may include memorisation; an option-shuffle check is planned.
-- **Loglikelihood scoring with the chat template.** Each answer letter is scored after a `Jawaban:` prefix inside the assistant turn. This is one reasonable setup, not the only one: generative scoring or no chat template can change scores and rankings. A generative run with Claude models is in progress (`runner/run_anthropic.py`).
+- **Loglikelihood scoring with the chat template.** Each answer letter is scored after a `Jawaban:` prefix inside the assistant turn. This is one reasonable setup, not the only one: generative scoring or no chat template can change scores and rankings. The Claude reference runs are generative; the open models have not been run generatively yet.
 - **Model sizes differ.** Like-for-like comparisons are the two CPT pairs and the three 27B models; cross-size rows (12B, 9B vs 27B) are context, not a fair contest.
 - **Statistics.** CIs are bootstrapped over items and not clustered by subject or province, so they are somewhat too narrow on IndoMMLU and IndoCulture. Holm correction is applied in the best-per-task comparison only.
 - **Reproducibility comes from pinned model SHAs and package versions.** The seed (1234) has no effect on loglikelihood scoring; the only run-to-run variation is numeric, measured once on a small model (Gemma 4 E2B, 50 items per task, zero difference).

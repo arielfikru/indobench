@@ -90,6 +90,26 @@ pretraining lanjutan GoTo di atas Gemma 3 tidak menunjukkan kenaikan yang teruku
 manfaatnya ada di hal yang belum kami ukur (gaya menulis, mengikuti instruksi, bahasa daerah).
 Catatan: kartu model GoTo tidak mencantumkan model dasarnya; kami mengasumsikan Gemma 3 27B IT.
 
+### 5. Pembanding: model tertutup Claude
+
+Sebagai patokan, kami juga menjalankan Claude Haiku, Sonnet, dan Opus 5.5 lewat API Anthropic
+dengan soal yang sama. Bedanya, model ini menulis jawaban lalu hurufnya diambil, bukan dinilai dari
+peluang huruf, jadi angkanya acuan, bukan pertandingan yang sepenuhnya setara.
+
+| Task | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Qwen3.8 27B |
+|---|---|---|---|---|
+| IndoMMLU | 71,1 | 81,2 | **85,7** | 71,4 |
+| Global-MMLU ID, umum | 80,9 | 91,7 | **94,6** | 79,3 |
+| Global-MMLU ID, "culturally sensitive" | 75,8 | 88,1 | **93,9** | 77,1 |
+| IndoCulture | 76,2 | 87,9 | **93,2** | 74,1 |
+| COPAL baku | 84,6 | 94,6 | **97,0** | 86,4 |
+| COPAL gaul | 80,9 | 91,1 | **97,3** | 82,3 |
+
+Haiku, model termurah, setara dengan model open-weight terbaik; seluruh rangkaian soal hanya
+menghabiskan $0,31. Opus unggul jauh di semua task dan satu-satunya model yang tidak turun di bahasa
+gaul. Di IndoCulture, jarak Opus ke model open terbaik 19 poin, jauh lebih besar dari selisih
+antara model lokal dan model umum mana pun.
+
 ## Catatan: bug di benchmark COPAL bawaan
 
 Run pertama kami memakai task COPAL bawaan lm-evaluation-harness dan mendapat gap baku-gaul 7-9 poin.
@@ -116,14 +136,16 @@ selalu baca prompt yang benar-benar dikirim ke model, bukan hanya skor akhirnya.
   instruction tuning GoTo sekaligus. Hal yang sama berlaku untuk pasangan Gemma 3.
 - Semua soal pilihan ganda. Kemampuan menulis, mengikuti instruksi, atau mengobrol dalam bahasa gaul
   belum diuji; itu tahap berikutnya (IFEval-ID-Gaul).
-- Belum ada model tertutup (Claude, GPT, Gemini) sebagai pembanding.
+- Model tertutup baru Claude; GPT dan Gemini belum. Claude dinilai secara generatif, model open
+  dengan peluang huruf.
 - Empat model saja, satu prompt per task, satu seed. Run kontrol menunjukkan hasil deterministik,
   tapi format prompt lain bisa menggeser angka beberapa poin.
 
 ## Biaya
 
 Semua run di Google Colab (RTX PRO 6000 96 GB) dengan vLLM 0.32 dan lm-evaluation-harness 0.4.13:
-sekitar 29 compute unit untuk seluruh percobaan, termasuk run ulang.
+sekitar 29 compute unit untuk seluruh percobaan, termasuk run ulang. Run Claude lewat Batch API
+Anthropic menghabiskan $29,44.
 
 ## Reproduksi
 
